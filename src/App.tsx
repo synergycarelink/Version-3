@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ServiceFinder from './components/ServiceFinder';
@@ -155,6 +156,7 @@ export default function App() {
         ? 'font-scale-xl' 
         : ''
     }`}>
+      <Analytics />
       
       {/* Header Accessibility & Nav coordinator */}
       <Header 
