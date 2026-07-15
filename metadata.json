@@ -1,0 +1,6 @@
+{
+  "name": "Synergy Care Link",
+  "description": "An interactive, highly accessible NDIS service website for Synergy Care Link, featuring a custom Service Finder, NDIS Plan Budget Estimator, Interactive Referral Portal, and built-in accessibility tools (Text-to-Speech, Font Resizer, High Contrast mode).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #0b2240; /* Trust Dark Navy */
+  --color-brand-secondary: #007c7c; /* Warm Teal */
+  --color-brand-accent: #f59e0b; /* Golden Amber (Civic.org.au inspired orange-gold) */
+  --color-brand-light: #f4f6f9; /* Soft ice white */
+  --color-brand-cream: #fbf9f4; /* Cozy warm cream */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-[#f8fafc] text-slate-800 antialiased font-sans transition-colors duration-200;
+  }
+}
+
+/* Dynamic High Contrast overrides */
+.high-contrast {
+  --color-brand-primary: #000000;
+  --color-brand-secondary: #000000;
+  --color-brand-accent: #ffff00; /* High Contrast Yellow */
+  --color-brand-light: #111111;
+  --color-brand-cream: #000000;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast * {
+  border-color: #ffff00 !important;
+}
+
+.high-contrast input, 
+.high-contrast textarea, 
+.high-contrast select {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border: 2px solid #ffff00 !apply;
+}
+
+.high-contrast button {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast button:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.high-contrast a {
+  color: #ffff00 !important;
+  text-decoration: underline !important;
+}
+
+/* FontSize overrides based on scale state */
+.font-scale-large {
+  font-size: 1.15rem;
+}
+.font-scale-large p, .font-scale-large li {
+  font-size: 1.15rem !important;
+  line-height: 1.75 !important;
+}
+.font-scale-large h1 {
+  font-size: 2.75rem !important;
+}
+.font-scale-large h2 {
+  font-size: 2.25rem !important;
+}
+.font-scale-large h3 {
+  font-size: 1.5rem !important;
+}
+
+.font-scale-xl {
+  font-size: 1.3rem;
+}
+.font-scale-xl p, .font-scale-xl li {
+  font-size: 1.3rem !important;
+  line-height: 1.85 !important;
+}
+.font-scale-xl h1 {
+  font-size: 3.25rem !important;
+}
+.font-scale-xl h2 {
+  font-size: 2.5rem !important;
+}
+.font-scale-xl h3 {
+  font-size: 1.75rem !important;
+}
+
+/* Custom animation classes */
+@keyframes pulse-gentle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.pulse-hover:hover {
+  animation: pulse-gentle 2s infinite ease-in-out;
+}
