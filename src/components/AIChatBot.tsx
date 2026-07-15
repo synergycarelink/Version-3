@@ -94,8 +94,16 @@ To get started, may I please have your **name**, and are you looking for support
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to get response from care assistant.');
+        let errorMsg = '';
+        try {
+          const errorData = await response.json();
+          errorMsg = errorData.error;
+        } catch (e) {
+          if (response.status === 504 || response.status === 502) {
+            errorMsg = 'The care assistant is taking a bit longer than usual to respond. Please try sending your message again, or click "Submit Details" below to review and finalize your referral directly.';
+          }
+        }
+        throw new Error(errorMsg || 'The care assistant could not respond at this moment. You can try again or click "Submit Details" below to finish your referral manually.');
       }
 
       const data = await response.json();
@@ -107,7 +115,12 @@ To get started, may I please have your **name**, and are you looking for support
         timestamp: new Date()
       }]);
     } catch (err: any) {
-      setError(err?.message || 'Connection interrupted. Please try again.');
+      const errorMsg = err?.message || '';
+      if (errorMsg.includes('Failed to fetch') || errorMsg.includes('network') || errorMsg.includes('Connection interrupted')) {
+        setError('Connection paused. Please try again, or click "Submit Details" to complete your intake form manually.');
+      } else {
+        setError(errorMsg || 'An interruption occurred. You can continue typing or click "Submit Details" to save your progress.');
+      }
       console.error(err);
     } finally {
       setIsLoading(false);

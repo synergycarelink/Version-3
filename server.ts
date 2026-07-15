@@ -13,6 +13,24 @@ const PORT = 3000;
 
 app.use(express.json());
 
+// Middleware to log all incoming API requests to a file for live diagnostic tracking
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api")) {
+    const timestamp = new Date().toISOString();
+    const start = Date.now();
+    res.on("finish", () => {
+      const duration = Date.now() - start;
+      const logLine = `[${timestamp}] ${req.method} ${req.path} - Status: ${res.statusCode} - Duration: ${duration}ms\n`;
+      try {
+        fs.appendFileSync(path.join(process.cwd(), "server-requests.log"), logLine, "utf8");
+      } catch (err) {
+        console.error("Failed to write to server-requests.log", err);
+      }
+    });
+  }
+  next();
+});
+
 // Helper function to log errors to a local file for persistent debugging
 function logServerError(context: string, error: any, reqBody?: any) {
   const timestamp = new Date().toISOString();
@@ -40,18 +58,21 @@ const ai = new GoogleGenAI({
 
 // Helper function to clean chat contents so they are strictly valid for the Gemini API
 function cleanChatContents(contents: any): any {
-  if (!Array.isArray(contents)) {
-    return contents;
+  if (!Array.isArray(contents) || contents.length === 0) {
+    return [{ role: "user", parts: [{ text: "Hello" }] }];
   }
 
   // 1. Find the first index where role is "user". Gemini requires chat to start with a user message.
   const firstUserIndex = contents.findIndex(item => item.role === "user");
+  
+  let sliced = contents;
   if (firstUserIndex === -1) {
-    return [];
+    // If no user message is found, prepend a default user message to ensure valid chat start
+    sliced = [{ role: "user", parts: [{ text: "Hello" }] }, ...contents];
+  } else {
+    // Slice starting from the first user message
+    sliced = contents.slice(firstUserIndex);
   }
-
-  // Slice starting from the first user message
-  const sliced = contents.slice(firstUserIndex);
 
   // 2. Ensure strictly alternating roles ("user", "model", "user", "model"...)
   const alternating: any[] = [];
