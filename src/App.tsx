@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ServiceFinder from './components/ServiceFinder';
@@ -764,6 +765,9 @@ export default function App() {
 
       {/* Floating AI Intake Chat Widget */}
       <AIChatBot highContrast={settings.highContrast} />
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
 
     </div>
   );
