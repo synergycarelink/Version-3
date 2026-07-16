@@ -5,12 +5,14 @@ import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import fs from "fs";
+import compression from "compression";
 
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
+app.use(compression());
 app.use(express.json());
 
 // Middleware to log all incoming API requests to a file for live diagnostic tracking
