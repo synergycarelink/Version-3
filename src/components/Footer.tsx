@@ -71,7 +71,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               <Mail size={14} className="text-amber-500 shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-white">Email Us:</p>
-                <a href="mailto:synergycarelink@gmail.com" className="hover:text-amber-400 transition-colors">synergycarelink@gmail.com</a>
+                <a href="mailto:admin@synergycarelink.com" className="hover:text-amber-400 transition-colors">admin@synergycarelink.com</a>
               </div>
             </li>
             <li className="flex items-start gap-2.5">

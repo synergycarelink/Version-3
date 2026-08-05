@@ -76,9 +76,9 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
             <Phone size={12} className="text-amber-400" />
             <span className="font-medium">1300 SYNERGY (1300 363 177)</span>
           </a>
-          <a href="mailto:synergycarelink@gmail.com" className="flex items-center gap-1.5 hover:text-amber-400 transition-colors">
+          <a href="mailto:admin@synergycarelink.com" className="flex items-center gap-1.5 hover:text-amber-400 transition-colors">
             <Mail size={12} className="text-amber-400" />
-            <span>synergycarelink@gmail.com</span>
+            <span>admin@synergycarelink.com</span>
           </a>
         </div>
         

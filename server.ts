@@ -296,7 +296,7 @@ app.post("/api/send-email", async (req, res) => {
     const smtpPort = parseInt(process.env.SMTP_PORT || "587");
 
     if (smtpUser && smtpPass) {
-      console.log(`[SMTP] Attempting real email send to synergycarelink@gmail.com using user: ${smtpUser}`);
+      console.log(`[SMTP] Attempting real email send to admin@synergycarelink.com using user: ${smtpUser}`);
       const transporter = nodemailer.createTransport({
         host: smtpHost,
         port: smtpPort,
@@ -309,7 +309,7 @@ app.post("/api/send-email", async (req, res) => {
 
       await transporter.sendMail({
         from: `"Synergy Care Link Portal" <${smtpUser}>`,
-        to: "synergycarelink@gmail.com",
+        to: "admin@synergycarelink.com",
         subject: `🚨 [New Referral Intake] - ${participantName}`,
         html: emailHtml,
       });
@@ -319,7 +319,7 @@ app.post("/api/send-email", async (req, res) => {
     } else {
       console.warn("[SMTP] SMTP credentials (SMTP_USER/SMTP_PASS) are missing. Email simulated and logged to console.");
       console.log("------------------ SIMULATED EMAIL ------------------");
-      console.log("TO: synergycarelink@gmail.com");
+      console.log("TO: admin@synergycarelink.com");
       console.log(`SUBJECT: 🚨 [New Referral Intake] - ${participantName}`);
       console.log("HTML BODY:", emailHtml);
       console.log("-----------------------------------------------------");
@@ -353,7 +353,7 @@ Please collect the following information step-by-step (do NOT ask for all at onc
 4. A brief description of their goals, needs, or disability so we can prepare their plan.
 
 Keep your tone very welcoming, clear, and reassuring. Respond in concise, easy-to-read sentences, using bullet points for options when appropriate.
-Once they have shared their details, confirm that you can help finalize their request, and that the collected information will be secure, sent straight to synergycarelink@gmail.com, and automatically logged in our secure Referral System. Tell them they can click 'Submit Details' in the chat to save and finalize.`;
+Once they have shared their details, confirm that you can help finalize their request, and that the collected information will be secure, sent straight to admin@synergycarelink.com, and automatically logged in our secure Referral System. Tell them they can click 'Submit Details' in the chat to save and finalize.`;
 
     // Map messages to Gemini's content structure
     const formattedContents = messages.map((m: any) => ({
