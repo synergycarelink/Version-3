@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250">
+  <rect width="800" height="250" rx="24" fill="#0b2240"/>
+  
+  <!-- Logo Icon Badge -->
+  <g transform="translate(40, 25)">
+    <rect width="200" height="200" rx="50" fill="#0f766e"/>
+    <circle cx="100" cy="100" r="85" fill="none" stroke="#f59e0b" stroke-width="6" opacity="0.5"/>
+    <g transform="translate(50, 50) scale(4.166)" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+      <path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9"/>
+      <path d="M16 11.5c.88.88 2.12.85 3 0l2-2"/>
+    </g>
+  </g>
+
+  <!-- Typography -->
+  <text x="270" y="125" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-size="64" fill="#ffffff" letter-spacing="2">SYNERGY</text>
+  <text x="270" y="180" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-size="36" fill="#f59e0b" letter-spacing="1">Care Link <tspan fill="#0f766e">|</tspan> <tspan fill="#cbd5e1" font-size="30" font-weight="500">NDIS Provider</tspan></text>
+</svg>

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ServiceFinder from './components/ServiceFinder';
 import NDISCalculator from './components/NDISCalculator';
+import SupportAtHomeCalculator from './components/SupportAtHomeCalculator';
 import ReferralPortal from './components/ReferralPortal';
 import AIChatBot from './components/AIChatBot';
 import { SERVICES_DATA } from './data/services';
@@ -53,11 +53,10 @@ export default function App() {
   const sectionRefs = {
     home: useRef<HTMLDivElement>(null),
     services: useRef<HTMLDivElement>(null),
+    'support-at-home': useRef<HTMLDivElement>(null),
     calculator: useRef<HTMLDivElement>(null),
     referrals: useRef<HTMLDivElement>(null),
     about: useRef<HTMLDivElement>(null),
-    finder: useRef<HTMLDivElement>(null),
-    staff: useRef<HTMLDivElement>(null),
   };
 
   // Speak assistant helper
@@ -74,23 +73,6 @@ export default function App() {
   const handleNavigate = (sectionId: string) => {
     setActiveSection(sectionId);
     
-    if (sectionId === 'staff') {
-      setShowReferralDashboard(true);
-      const targetRef = sectionRefs.referrals;
-      if (targetRef.current) {
-        targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      return;
-    }
-
-    if (sectionId === 'finder') {
-      const finderRef = sectionRefs.finder;
-      if (finderRef.current) {
-        finderRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      return;
-    }
-
     const ref = sectionRefs[sectionId as keyof typeof sectionRefs];
     if (ref && ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -478,14 +460,14 @@ export default function App() {
         )}
 
 
-        {/* 4. THE INTERACTIVE CARE FINDER WIZARD SECTION */}
+        {/* 5. SUPPORT AT HOME BUDGET CALCULATOR SECTION */}
         <section 
-          ref={sectionRefs.finder}
-          id="finder"
-          className="py-16 sm:py-24 bg-white border-t border-b border-slate-100"
+          ref={sectionRefs['support-at-home']}
+          id="support-at-home"
+          className="py-16 sm:py-24 bg-slate-50 border-t border-slate-200"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ServiceFinder 
+            <SupportAtHomeCalculator 
               onPreFillReferral={handlePreFillReferral} 
               onNavigate={handleNavigate} 
             />
@@ -493,11 +475,11 @@ export default function App() {
         </section>
 
 
-        {/* 5. DYNAMIC NDIS PLAN ESTIMATOR CALCULATOR */}
+        {/* 6. DYNAMIC NDIS PLAN ESTIMATOR CALCULATOR */}
         <section 
           ref={sectionRefs.calculator}
           id="calculator"
-          className="py-16 sm:py-24 bg-slate-50"
+          className="py-16 sm:py-24 bg-white border-t border-slate-200"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <NDISCalculator 

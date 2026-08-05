@@ -1,0 +1,17 @@
+{
+  "name": "Synergy Care Link - NDIS & Support at Home Care Services",
+  "short_name": "Synergy Care Link",
+  "description": "Registered NDIS provider offering NDIS Budget Calculator, Support at Home Budget Calculator, and Care Support Intake.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0f766e",
+  "background_color": "#0b2240"
+}

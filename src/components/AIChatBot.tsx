@@ -327,9 +327,29 @@ Full conversation summary captured securely.`,
 
                 {/* Active Error state */}
                 {error && (
-                  <div className="bg-rose-50 border border-rose-100 text-rose-700 p-2.5 rounded-lg text-[11px] flex items-start gap-1.5">
-                    <AlertCircle size={14} className="mt-0.5 shrink-0" />
-                    <span>{error}</span>
+                  <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-xl text-[11px] space-y-2 shadow-sm">
+                    <div className="flex items-start gap-1.5">
+                      <AlertCircle size={15} className="text-rose-600 mt-0.5 shrink-0" />
+                      <span className="font-medium leading-relaxed">{error}</span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => handleSendMessage()}
+                        disabled={isLoading}
+                        className="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-2.5 py-1 rounded text-[10px] transition-colors cursor-pointer"
+                      >
+                        Try Sending Again
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleExtractDetails}
+                        disabled={isExtracting}
+                        className="bg-teal-700 hover:bg-teal-800 text-white font-semibold px-2.5 py-1 rounded text-[10px] transition-colors cursor-pointer"
+                      >
+                        Submit Details Directly
+                      </button>
+                    </div>
                   </div>
                 )}
                 

@@ -102,26 +102,18 @@ export default function Footer({ onNavigate }: FooterProps) {
             </li>
             <li>
               <button 
+                onClick={() => onNavigate('support-at-home')}
+                className="hover:text-amber-400 text-teal-300 font-semibold transition-colors flex items-center gap-1.5 text-left cursor-pointer"
+              >
+                Support at Home Calculator
+              </button>
+            </li>
+            <li>
+              <button 
                 onClick={() => onNavigate('calculator')}
                 className="hover:text-amber-400 transition-colors flex items-center gap-1.5 text-left cursor-pointer"
               >
                 Plan Budget Calculator
-              </button>
-            </li>
-            <li>
-              <button 
-                onClick={() => onNavigate('finder')}
-                className="hover:text-amber-400 transition-colors flex items-center gap-1.5 text-left cursor-pointer"
-              >
-                Find Custom Supports
-              </button>
-            </li>
-            <li>
-              <button 
-                onClick={() => onNavigate('staff')}
-                className="hover:text-amber-400 text-teal-400 font-semibold transition-colors flex items-center gap-1.5 text-left cursor-pointer border border-teal-500/30 px-2 py-0.5 rounded bg-teal-950/20"
-              >
-                Provider & Staff Portal
               </button>
             </li>
           </ul>

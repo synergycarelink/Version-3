@@ -62,11 +62,10 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
 
   const navItems = [
     { label: 'Services', id: 'services' },
+    { label: 'Support at Home Calculator', id: 'support-at-home' },
     { label: 'NDIS Plan Calculator', id: 'calculator' },
     { label: 'Submit Referral', id: 'referrals' },
     { label: 'About Us', id: 'about' },
-    { label: 'Service Finder', id: 'finder' },
-    { label: 'Provider Board', id: 'staff' },
   ];
 
   return (
@@ -239,7 +238,7 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
             onClick={() => onNavigate('referrals')}
             className="ml-4 bg-teal-700 hover:bg-amber-500 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow hover:shadow-md transition-all duration-300 animate-pulse-gentle"
           >
-            Submit NDIS Referral
+            Submit Referral
           </button>
         </nav>
 
@@ -282,7 +281,7 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
               }}
               className="w-full text-center bg-teal-700 hover:bg-amber-500 text-white py-2.5 rounded-lg text-sm font-bold shadow transition-colors"
             >
-              Submit NDIS Referral
+              Submit Referral
             </button>
           </div>
         </div>

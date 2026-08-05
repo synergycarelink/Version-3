@@ -60,6 +60,10 @@ const ai = new GoogleGenAI({
 
 // Helper function to clean chat contents so they are strictly valid for the Gemini API
 function cleanChatContents(contents: any): any {
+  if (typeof contents === "string") {
+    return [{ role: "user", parts: [{ text: contents }] }];
+  }
+
   if (!Array.isArray(contents) || contents.length === 0) {
     return [{ role: "user", parts: [{ text: "Hello" }] }];
   }
@@ -82,19 +86,21 @@ function cleanChatContents(contents: any): any {
     if (alternating.length === 0) {
       alternating.push({
         role: item.role,
-        parts: [...item.parts]
+        parts: Array.isArray(item.parts) ? [...item.parts] : [{ text: String(item.parts || "") }]
       });
     } else {
       const lastItem = alternating[alternating.length - 1];
       if (lastItem.role === item.role) {
         // Merge text of consecutive items with the same role
-        const lastText = lastItem.parts.map((p: any) => p.text).join("\n");
-        const newText = item.parts.map((p: any) => p.text).join("\n");
+        const lastText = lastItem.parts.map((p: any) => p.text || "").join("\n");
+        const itemParts = Array.isArray(item.parts) ? item.parts : [{ text: String(item.parts || "") }];
+        const newText = itemParts.map((p: any) => p.text || "").join("\n");
         lastItem.parts = [{ text: `${lastText}\n${newText}` }];
       } else {
+        const itemParts = Array.isArray(item.parts) ? item.parts : [{ text: String(item.parts || "") }];
         alternating.push({
           role: item.role,
-          parts: [...item.parts]
+          parts: [...itemParts]
         });
       }
     }
@@ -106,7 +112,7 @@ function cleanChatContents(contents: any): any {
 // Helper function to call generateContent with automatic model fallback and retries for maximum reliability
 async function callGeminiWithFallback(contents: any, config: any) {
   const cleanedContents = cleanChatContents(contents);
-  const modelsToTry = ["gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-flash-latest"];
+  const modelsToTry = ["gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-flash-latest"];
   let lastError: any = null;
 
   for (const model of modelsToTry) {
@@ -327,7 +333,7 @@ Once they have shared their details, confirm that you can help finalize their re
     // Map messages to Gemini's content structure
     const formattedContents = messages.map((m: any) => ({
       role: m.role === "assistant" ? "model" : "user",
-      parts: [{ text: m.content }]
+      parts: [{ text: String(m.content || "") }]
     }));
 
     const response = await callGeminiWithFallback(
