@@ -7,6 +7,7 @@ export interface NDISService {
   iconName: string; // Used to dynamically map Lucide icons
   features: string[];
   pricingGuide: string;
+  programType?: 'ndis' | 'support_at_home' | 'both';
 }
 
 export interface ReferralSubmission {

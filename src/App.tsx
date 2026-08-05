@@ -26,7 +26,11 @@ import {
   Sparkles as SparklesIcon,
   HelpCircle,
   ThumbsUp,
-  MessageSquareQuote
+  MessageSquareQuote,
+  Stethoscope,
+  Activity,
+  Car,
+  Wrench
 } from 'lucide-react';
 
 export default function App() {
@@ -47,6 +51,9 @@ export default function App() {
 
   // Active expanded service modal
   const [selectedServiceDetail, setSelectedServiceDetail] = useState<NDISService | null>(null);
+
+  // Service Category Filter (All / NDIS / Support at Home)
+  const [serviceFilter, setServiceFilter] = useState<'all' | 'ndis' | 'support_at_home'>('all');
 
   // References for scrolling
   const sectionRefs = {
@@ -99,6 +106,10 @@ export default function App() {
       case 'HeartHandshake': return <HeartHandshakeIcon size={size} className="text-teal-600" />;
       case 'Key': return <Key size={size} className="text-teal-600" />;
       case 'Sparkles': return <SparklesIcon size={size} className="text-teal-600" />;
+      case 'Stethoscope': return <Stethoscope size={size} className="text-amber-600" />;
+      case 'Activity': return <Activity size={size} className="text-amber-600" />;
+      case 'Car': return <Car size={size} className="text-amber-600" />;
+      case 'Wrench': return <Wrench size={size} className="text-amber-600" />;
       default: return <HeartHandshake size={size} className="text-teal-600" />;
     }
   };
@@ -183,17 +194,17 @@ export default function App() {
               {/* Action Cards & Buttons */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                 <button
-                  onClick={() => handleNavigate('finder')}
+                  onClick={() => handleNavigate('referrals')}
                   className="bg-amber-500 hover:bg-amber-400 text-[#0b2240] font-bold text-xs sm:text-sm px-7 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
                 >
-                  Try Interactive Care Finder
+                  Submit a Client Referral
                   <ChevronRight size={16} />
                 </button>
                 <button
                   onClick={() => handleNavigate('services')}
                   className="bg-teal-700/80 hover:bg-teal-600/90 text-white font-semibold text-xs sm:text-sm px-6 py-4 rounded-xl border border-teal-500/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  Explore Our 6 Core Services
+                  Explore Our Core Services
                 </button>
               </div>
 
@@ -297,51 +308,101 @@ export default function App() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-2">
+            <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
               <span className="text-teal-700 font-display text-xs font-bold uppercase tracking-wider">
                 Support Options
               </span>
               <h2 
-                onClick={() => speakText("Our professional NDIS support services. We provide Supported Independent Living, Community Access Hubs, Support Coordination, In Home Care, Specialist Disability Housing, and Social weekend clubs.")}
+                onClick={() => speakText("Our professional NDIS and Support at Home care services. We provide Supported Independent Living, Community Access Hubs, Support Coordination, In Home Care, Clinical Nursing, Domestic Support, and Allied Health Services.")}
                 className="text-2xl sm:text-3xl font-display font-bold text-[#0b2240] cursor-help hover:text-teal-700 transition-colors"
                 title="Click to read section description aloud"
               >
-                Comprehensive NDIS Care Services
+                Comprehensive NDIS & Support at Home Services
               </h2>
-              <p className="text-slate-500 text-sm">
-                We design specialized programs helping participants achieve independence, safety, and community links in Greater Parramatta and wider Sydney.
+              <p className="text-slate-500 text-sm leading-relaxed">
+                We design specialized programs helping NDIS participants and senior Australians achieve independence, safety, and community connections in Greater Parramatta and wider Sydney.
               </p>
+            </div>
+
+            {/* Category Filter Tabs */}
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+              {[
+                { id: 'all', label: `All Services (${SERVICES_DATA.length})` },
+                { id: 'ndis', label: `NDIS Services (${SERVICES_DATA.filter(s => s.programType === 'ndis' || s.programType === 'both').length})` },
+                { id: 'support_at_home', label: `Support at Home Services (${SERVICES_DATA.filter(s => s.programType === 'support_at_home' || s.programType === 'both').length})` },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setServiceFilter(tab.id as any)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs ${
+                    serviceFilter === tab.id
+                      ? tab.id === 'support_at_home' 
+                        ? 'bg-amber-600 text-white shadow-amber-200 shadow-md'
+                        : 'bg-[#0b2240] text-white shadow-slate-300 shadow-md'
+                      : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
 
             {/* Services Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {SERVICES_DATA.map((service) => (
+              {SERVICES_DATA.filter((service) => {
+                if (serviceFilter === 'ndis') return service.programType === 'ndis' || service.programType === 'both';
+                if (serviceFilter === 'support_at_home') return service.programType === 'support_at_home' || service.programType === 'both';
+                return true;
+              }).map((service) => (
                 <div
                   key={service.id}
                   className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                 >
                   <div className="space-y-4">
-                    {/* Icon & Category Header */}
-                    <div className="flex justify-between items-start">
-                      <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center border border-teal-100 group-hover:bg-teal-600 transition-colors duration-300">
+                    {/* Icon, Program Badge & Audio Header */}
+                    <div className="flex justify-between items-start gap-2">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-colors duration-300 ${
+                        service.programType === 'support_at_home'
+                          ? 'bg-amber-50 border-amber-200 group-hover:bg-amber-600'
+                          : service.programType === 'both'
+                          ? 'bg-purple-50 border-purple-200 group-hover:bg-purple-600'
+                          : 'bg-teal-50 border-teal-100 group-hover:bg-teal-600'
+                      }`}>
                         <div className="group-hover:text-white transition-colors">
                           {getServiceIcon(service.iconName, 22)}
                         </div>
                       </div>
-                      
-                      {/* Audio reader helper per service */}
-                      <button
-                        onClick={() => speakText(`${service.title}. ${service.shortDescription}`)}
-                        className="p-1.5 rounded-full text-slate-300 hover:text-teal-700 hover:bg-slate-100 transition-all cursor-pointer"
-                        title="Read this service aloud"
-                      >
-                        <Volume2 size={16} />
-                      </button>
+
+                      <div className="flex items-center gap-2">
+                        {/* Program Category Badge */}
+                        <span className={`text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${
+                          service.programType === 'support_at_home'
+                            ? 'bg-amber-100 text-amber-800 border-amber-200'
+                            : service.programType === 'both'
+                            ? 'bg-purple-100 text-purple-800 border-purple-200'
+                            : 'bg-teal-100 text-teal-800 border-teal-200'
+                        }`}>
+                          {service.programType === 'support_at_home' 
+                            ? 'Support at Home' 
+                            : service.programType === 'both' 
+                            ? 'NDIS & Support at Home' 
+                            : 'NDIS'}
+                        </span>
+                        
+                        {/* Audio reader helper per service */}
+                        <button
+                          onClick={() => speakText(`${service.title}. ${service.shortDescription}`)}
+                          className="p-1.5 rounded-full text-slate-300 hover:text-teal-700 hover:bg-slate-100 transition-all cursor-pointer shrink-0"
+                          title="Read this service aloud"
+                        >
+                          <Volume2 size={16} />
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-1.5">
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
-                        {service.ndisCategory.split(' - ')[0]}
+                        {service.ndisCategory}
                       </span>
                       <h3 className="text-lg font-display font-bold text-[#0b2240] group-hover:text-teal-700 transition-colors">
                         {service.title}
@@ -355,7 +416,7 @@ export default function App() {
                     <ul className="space-y-1 pt-1 border-t border-slate-100">
                       {service.features.slice(0, 3).map((feat, idx) => (
                         <li key={idx} className="flex items-center gap-1.5 text-slate-600 text-[11px]">
-                          <Check size={12} className="text-emerald-500 shrink-0" />
+                          <Check size={12} className={service.programType === 'support_at_home' ? "text-amber-500 shrink-0" : "text-emerald-500 shrink-0"} />
                           <span className="truncate">{feat}</span>
                         </li>
                       ))}

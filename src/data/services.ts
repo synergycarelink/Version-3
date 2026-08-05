@@ -1,6 +1,7 @@
 import { NDISService } from '../types';
 
 export const SERVICES_DATA: NDISService[] = [
+  // NDIS Core & Capacity Building Services
   {
     id: 'sil',
     title: 'Supported Independent Living (SIL)',
@@ -8,6 +9,7 @@ export const SERVICES_DATA: NDISService[] = [
     fullDescription: 'Supported Independent Living (SIL) is help with daily tasks to help you live as independently as possible. It is designed for individuals who require 24/7 active support in a shared or private home environment. Our warm and trained support workers help with personal care, preparing meals, managing medication, cleaning, and attending appointments.',
     ndisCategory: 'Core Supports - Assistance with Daily Life',
     iconName: 'Home',
+    programType: 'ndis',
     features: [
       'Fully furnished, high-accessibility homes',
       '24/7 dedicated and trained support staff on site',
@@ -22,8 +24,9 @@ export const SERVICES_DATA: NDISService[] = [
     title: 'Community Access & Day Hubs',
     shortDescription: 'Exciting, group-based hubs and outings to learn skills, make lifelong friends, and connect.',
     fullDescription: 'Inspired by modern Community Hub models, Synergy Care Link provides daily group-based programs and social outings that promote skill-building and friendship. From cooking classes and arts & crafts to technology workshops, beach days, and sports, our hubs are inclusive, exciting environments where clients can shine.',
-    ndisCategory: 'Core Supports - Assistance with Social, Economic & Community Participation',
+    ndisCategory: 'Core Supports - Social & Community Participation',
     iconName: 'Users',
+    programType: 'ndis',
     features: [
       'Tailored workshops (Cooking, Art, Music, Woodwork)',
       'Digital literacy and technology programs',
@@ -40,6 +43,7 @@ export const SERVICES_DATA: NDISService[] = [
     fullDescription: 'Navigating the NDIS can be complex. Our dedicated Support Coordinators are advocates who work alongside you to interpret your NDIS plan, identify the best service providers, manage service agreements, and prepare you for plan reviews. We handle the paperwork and logistics so you can focus on thriving.',
     ndisCategory: 'Capacity Building - Support Coordination',
     iconName: 'Compass',
+    programType: 'ndis',
     features: [
       'Dedicated NDIS experts matching you with ideal services',
       'Assistance setting up service agreements and portals',
@@ -51,11 +55,12 @@ export const SERVICES_DATA: NDISService[] = [
   },
   {
     id: 'in-home-care',
-    title: 'In-Home Care & Individual Support',
+    title: 'In-Home Care & Personal Support',
     shortDescription: 'One-on-one assistance inside your own home to maintain your preferred lifestyle.',
-    fullDescription: 'If you prefer living in your own private home but need some assistance to manage daily chores and stay safe, our In-Home Support service is perfect. We match you with support workers who share your interests, assisting with household tasks, light cooking, shopping, personal hygiene, and companionship.',
+    fullDescription: 'If you prefer living in your own private home but need assistance to manage daily chores and stay safe, our In-Home Support service is perfect. We match you with support workers who share your interests, assisting with household tasks, light cooking, shopping, personal hygiene, and companionship.',
     ndisCategory: 'Core Supports - Assistance with Daily Life',
     iconName: 'HeartHandshake',
+    programType: 'both',
     features: [
       'Personal care (showering, dressing, grooming)',
       'Domestic assistance (cleaning, laundry, decluttering)',
@@ -63,7 +68,7 @@ export const SERVICES_DATA: NDISService[] = [
       'Companionship, conversation, and reading assistance',
       'Flexible scheduling from 2 hours a week to daily visits'
     ],
-    pricingGuide: 'Funded under NDIS Core Supports (Assistance with Daily Life / Self Care).'
+    pricingGuide: 'Funded under NDIS Core Supports or Support at Home Care Packages.'
   },
   {
     id: 'sda',
@@ -72,6 +77,7 @@ export const SERVICES_DATA: NDISService[] = [
     fullDescription: 'For participants who require specialized physical housing solutions due to high support needs, we connect and partner to provide premium Specialist Disability Accommodation (SDA). Our high-physical-support homes feature robust automation, assistive technology, wide doorways, structural supports, and on-site emergency care facilities.',
     ndisCategory: 'Capital Supports - Specialist Disability Accommodation',
     iconName: 'Key',
+    programType: 'ndis',
     features: [
       'High Physical Support standard design',
       'Smart home automation (doors, lights, climate control)',
@@ -88,6 +94,7 @@ export const SERVICES_DATA: NDISService[] = [
     fullDescription: 'Synergy Care Link believes that recreation is key to wellness. We organize regular weekend socials, dynamic interest-based clubs (such as bowling, cinema, and dining), and hosted holiday retreats where participants can travel to new places, camp, and experience adventures with trained carer support.',
     ndisCategory: 'Core Supports - Social & Community Participation',
     iconName: 'Sparkles',
+    programType: 'ndis',
     features: [
       'Supported weekend social dinners and club activities',
       'Supported travel, campouts, and holiday retreats',
@@ -96,5 +103,109 @@ export const SERVICES_DATA: NDISService[] = [
       'Peer mentorship and self-advocacy training groups'
     ],
     pricingGuide: 'Funded under Core Supports (Community Participation) or Capacity Building (Social & Community).'
+  },
+
+  // Support at Home Care Services
+  {
+    id: 'sah-nursing',
+    title: 'Support at Home - Clinical & Nursing Care',
+    shortDescription: 'Registered Nurse visits for clinical monitoring, wound management, and health support at home.',
+    fullDescription: 'Under the Australian Support at Home aged care framework, our Registered Nurses deliver professional clinical care directly in your home. Services include wound dressing changes, chronic condition management, post-hospital discharge transition care, medication administration, and health monitoring.',
+    ndisCategory: 'Support at Home - Clinical & Health Care',
+    iconName: 'Stethoscope',
+    programType: 'support_at_home',
+    features: [
+      'Registered Nurse (RN) clinical visits & health assessments',
+      'Wound management & dressing changes',
+      'Medication setup, administration & monitoring',
+      'Post-acute hospital transition care',
+      'Diabetes & chronic condition management'
+    ],
+    pricingGuide: 'Funded under Australian Government Support at Home Care Packages.'
+  },
+  {
+    id: 'sah-personal',
+    title: 'Support at Home - Personal Care & Hygiene',
+    shortDescription: 'Respectful, gentle assistance with showering, mobility, grooming, and dressing in your home.',
+    fullDescription: 'Maintain your dignity, independence, and comfort in your own home. Our trained personal care workers assist seniors with morning routines, showering, dressing, mobility transfers, continence management, and personal grooming tailored to individual preferences.',
+    ndisCategory: 'Support at Home - Independence & Personal Care',
+    iconName: 'HeartHandshake',
+    programType: 'support_at_home',
+    features: [
+      'Assistance with showering, bathing & personal hygiene',
+      'Dressing, grooming & personal care support',
+      'Safe mobility & transfer assistance',
+      'Morning and evening routine support',
+      'Dignified continence management'
+    ],
+    pricingGuide: 'Funded under Support at Home Care Packages or private fee-for-service.'
+  },
+  {
+    id: 'sah-domestic',
+    title: 'Support at Home - Domestic & Housekeeping',
+    shortDescription: 'Help around the home with light cleaning, laundry, vacuuming, and fresh meal preparation.',
+    fullDescription: 'Keep your home clean, comfortable, and safe without physical strain. Our domestic care team assists with weekly house cleaning, bed linen changes, laundry, dishwashing, grocery shopping, and healthy meal preparation.',
+    ndisCategory: 'Support at Home - Everyday Living',
+    iconName: 'Home',
+    programType: 'support_at_home',
+    features: [
+      'Regular housekeeping, vacuuming & dusting',
+      'Laundry, ironing & linen changes',
+      'Nutritious meal planning & cooking',
+      'Pantry restocking & grocery shopping support',
+      'Home decluttering & safety hazard checks'
+    ],
+    pricingGuide: 'Funded under Support at Home Care Packages (Everyday Living stream).'
+  },
+  {
+    id: 'sah-allied',
+    title: 'Support at Home - Allied Health & Therapies',
+    shortDescription: 'In-home Physiotherapy, Occupational Therapy, Podiatry, and mobility equipment advice.',
+    fullDescription: 'Stay mobile and prevent falls with specialized in-home allied health. Our team of physiotherapists, occupational therapists, and podiatrists come directly to your home to conduct fall risk assessments, prescribe mobility aids, and deliver rehabilitation exercises.',
+    ndisCategory: 'Support at Home - Restoration & Health',
+    iconName: 'Activity',
+    programType: 'support_at_home',
+    features: [
+      'In-home Physiotherapy & rehabilitation exercises',
+      'Occupational Therapy home safety assessments',
+      'Podiatry & foot health care visits',
+      'Mobility equipment prescriptions (walkers, ramp advice)',
+      'Fall prevention & strength building programs'
+    ],
+    pricingGuide: 'Funded under Support at Home (Restoration / Allied Health stream).'
+  },
+  {
+    id: 'sah-transport',
+    title: 'Support at Home - Transport & Social Outings',
+    shortDescription: 'Safe, assisted transport to medical appointments, shopping trips, and community gatherings.',
+    fullDescription: 'Stay connected with your community, family, and medical professionals. Our transport support staff drive you safely to medical appointments, community centers, social clubs, family gatherings, or local shopping centers.',
+    ndisCategory: 'Support at Home - Community & Outings',
+    iconName: 'Car',
+    programType: 'support_at_home',
+    features: [
+      'Assisted transport to GP & specialist appointments',
+      'Accompanied grocery shopping & errand runs',
+      'Visits to senior social groups & community events',
+      'Wheelchair accessible transport options available',
+      'Flexible door-to-door escort service'
+    ],
+    pricingGuide: 'Funded under Support at Home Care Packages.'
+  },
+  {
+    id: 'sah-gardening',
+    title: 'Support at Home - Home Repairs & Gardening',
+    shortDescription: 'Lawn mowing, garden care, minor repairs, and bathroom safety grab rail installations.',
+    fullDescription: 'Ensure your home environment remains safe, functional, and well-maintained. We provide lawn mowing, garden upkeep, minor home maintenance, gutter cleaning, and installation of safety grab rails or non-slip ramps.',
+    ndisCategory: 'Support at Home - Home Safety',
+    iconName: 'Wrench',
+    programType: 'support_at_home',
+    features: [
+      'Lawn mowing, weeding & garden maintenance',
+      'Minor home repairs & light bulb replacements',
+      'Installation of bathroom grab rails & ramps',
+      'Window cleaning & safety checks',
+      'Smoke alarm testing & hazard removal'
+    ],
+    pricingGuide: 'Funded under Support at Home Care Packages.'
   }
 ];
