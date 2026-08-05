@@ -64,7 +64,6 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
     { label: 'Services', id: 'services' },
     { label: 'Support at Home Calculator', id: 'support-at-home' },
     { label: 'NDIS Plan Calculator', id: 'calculator' },
-    { label: 'Submit Referral', id: 'referrals' },
     { label: 'About Us', id: 'about' },
   ];
 

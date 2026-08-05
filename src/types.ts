@@ -15,10 +15,12 @@ export interface ReferralSubmission {
   referrerEmail: string;
   referrerPhone: string;
   relationship: 'self' | 'family' | 'coordinator' | 'health_professional' | 'other';
+  referralType?: 'ndis' | 'support_at_home' | 'both';
   participantName: string;
   participantAge: number;
   participantGender: string;
   ndisNumber?: string;
+  supportAtHomeNumber?: string;
   primaryDisability: string;
   requestedServices: string[];
   preferredContact: 'phone' | 'email' | 'any';

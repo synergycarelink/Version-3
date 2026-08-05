@@ -60,10 +60,12 @@ export default function ReferralPortal({
   const [referrerEmail, setReferrerEmail] = useState('');
   const [referrerPhone, setReferrerPhone] = useState('');
   const [relationship, setRelationship] = useState<ReferralSubmission['relationship']>('self');
+  const [referralType, setReferralType] = useState<'ndis' | 'support_at_home' | 'both'>('ndis');
   const [participantName, setParticipantName] = useState('');
   const [participantAge, setParticipantAge] = useState<number | ''>(25);
   const [participantGender, setParticipantGender] = useState('Prefer not to say');
   const [ndisNumber, setNdisNumber] = useState('');
+  const [supportAtHomeNumber, setSupportAtHomeNumber] = useState('');
   const [primaryDisability, setPrimaryDisability] = useState('');
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [preferredContact, setPreferredContact] = useState<ReferralSubmission['preferredContact']>('any');
@@ -77,6 +79,14 @@ export default function ReferralPortal({
   useEffect(() => {
     if (preFilledServices.length > 0) {
       setSelectedServices(preFilledServices);
+      // Auto switch referral type if prefill contains Support at Home services
+      const hasSupportAtHome = preFilledServices.some(s => s.startsWith('sah-'));
+      const hasNDIS = preFilledServices.some(s => !s.startsWith('sah-'));
+      if (hasSupportAtHome && hasNDIS) {
+        setReferralType('both');
+      } else if (hasSupportAtHome) {
+        setReferralType('support_at_home');
+      }
     }
     if (preFilledNotes) {
       setAdditionalInfo(prev => prev ? `${prev}\n\n${preFilledNotes}` : preFilledNotes);
@@ -99,7 +109,7 @@ export default function ReferralPortal({
     if (stored) {
       setSubmissions(JSON.parse(stored));
     } else {
-      // Seed with 2 professional mock submissions for realistic dashboard view
+      // Seed with professional mock submissions for realistic dashboard view
       const mockData: ReferralSubmission[] = [
         {
           id: 'ref-1',
@@ -107,6 +117,7 @@ export default function ReferralPortal({
           referrerEmail: 's.jenkins@westernhealth.org.au',
           referrerPhone: '0412 345 678',
           relationship: 'health_professional',
+          referralType: 'ndis',
           participantName: 'James Henderson',
           participantAge: 29,
           participantGender: 'Male',
@@ -124,14 +135,15 @@ export default function ReferralPortal({
           referrerEmail: 'robert.dow@gmail.com',
           referrerPhone: '0499 888 777',
           relationship: 'self',
-          participantName: 'Robert Dow',
-          participantAge: 42,
-          participantGender: 'Male',
-          ndisNumber: 'NDIS-8822A',
-          primaryDisability: 'Acquired Brain Injury (ABI)',
-          requestedServices: ['in-home-care', 'support-coordination'],
+          referralType: 'support_at_home',
+          participantName: 'Margaret Dow',
+          participantAge: 76,
+          participantGender: 'Female',
+          supportAtHomeNumber: 'SAH-8822A',
+          primaryDisability: 'Mobility impairment & post-stroke recovery',
+          requestedServices: ['sah-domestic', 'sah-personal', 'sah-nursing'],
           preferredContact: 'email',
-          additionalInfo: 'Need assistance setting up my new plan. I am self-managing but require support worker assistance 3 times a week for grocery shopping and meal prep.',
+          additionalInfo: 'My mother needs 3 visits per week for showering, domestic assistance, and weekly registered nurse checkups.',
           submittedAt: new Date(Date.now() - 3600000 * 5).toLocaleString(),
           status: 'pending'
         }
@@ -161,10 +173,12 @@ export default function ReferralPortal({
       referrerEmail,
       referrerPhone,
       relationship,
+      referralType,
       participantName,
       participantAge: participantAge === '' ? 0 : Number(participantAge),
       participantGender,
       ndisNumber: ndisNumber || undefined,
+      supportAtHomeNumber: supportAtHomeNumber || undefined,
       primaryDisability,
       requestedServices: selectedServices,
       preferredContact,
@@ -239,9 +253,10 @@ export default function ReferralPortal({
   };
 
   const addDemoReferral = () => {
-    const names = ['Lachlan Smith', 'Emily Watson', 'Marcus Aurelius', 'Chloe Evans'];
-    const disabilities = ['Cerebral Palsy', 'Down Syndrome', 'Spina Bifida', 'Psychosocial Disability'];
-    const services = [['community-hubs'], ['support-coordination', 'rec-social'], ['sil', 'sda'], ['in-home-care']];
+    const names = ['Lachlan Smith', 'Emily Watson', 'Arthur Pendelton', 'Chloe Evans'];
+    const disabilities = ['Cerebral Palsy', 'Down Syndrome', 'Age-related frailty & Parkinson\'s', 'Psychosocial Disability'];
+    const services = [['community-hubs'], ['support-coordination', 'rec-social'], ['sah-personal', 'sah-domestic', 'sah-nursing'], ['in-home-care']];
+    const types: ('ndis' | 'support_at_home' | 'both')[] = ['ndis', 'ndis', 'support_at_home', 'both'];
     
     const index = Math.floor(Math.random() * names.length);
     const mockRef: ReferralSubmission = {
@@ -250,10 +265,12 @@ export default function ReferralPortal({
       referrerEmail: `coord.${names[index].split(' ')[0].toLowerCase()}@care.org.au`,
       referrerPhone: '0400 111 222',
       relationship: 'coordinator',
+      referralType: types[index],
       participantName: names[index],
-      participantAge: Math.floor(Math.random() * 40) + 10,
+      participantAge: types[index] === 'support_at_home' ? 78 : Math.floor(Math.random() * 40) + 18,
       participantGender: Math.random() > 0.5 ? 'Male' : 'Female',
-      ndisNumber: Math.floor(100000000 + Math.random() * 900000000).toString(),
+      ndisNumber: types[index] !== 'support_at_home' ? Math.floor(100000000 + Math.random() * 900000000).toString() : undefined,
+      supportAtHomeNumber: types[index] !== 'ndis' ? `SAH-${Math.floor(100000 + Math.random() * 900000)}` : undefined,
       primaryDisability: disabilities[index],
       requestedServices: services[index],
       preferredContact: 'email',
@@ -271,10 +288,12 @@ export default function ReferralPortal({
     setReferrerEmail('');
     setReferrerPhone('');
     setRelationship('self');
+    setReferralType('ndis');
     setParticipantName('');
     setParticipantAge(25);
     setParticipantGender('Prefer not to say');
     setNdisNumber('');
+    setSupportAtHomeNumber('');
     setPrimaryDisability('');
     setSelectedServices([]);
     setPreferredContact('any');
@@ -302,8 +321,8 @@ export default function ReferralPortal({
         <div className="flex items-center gap-2">
           <FileText className="text-amber-400 shrink-0" size={22} />
           <div>
-            <h3 className="text-white font-display font-bold text-lg tracking-tight">Synergy NDIS Service Link Portal</h3>
-            <p className="text-xs text-slate-300">Submit referrals, book client assessments, or securely manage admissions.</p>
+            <h3 className="text-white font-display font-bold text-lg tracking-tight">Synergy Client Referral Portal</h3>
+            <p className="text-xs text-slate-300">Submit referrals for NDIS, Support at Home, or combined care packages.</p>
           </div>
         </div>
         
@@ -340,7 +359,7 @@ export default function ReferralPortal({
 
       <div className="p-6 sm:p-8">
         
-        {/* TAB 1: Intake Intake Form */}
+        {/* TAB 1: Intake Form */}
         {activeTab === 'form' && (
           <div>
             {!isSubmitted ? (
@@ -401,7 +420,7 @@ export default function ReferralPortal({
                           key={rel.id}
                           type="button"
                           onClick={() => setRelationship(rel.id as any)}
-                          className={`p-2 rounded-lg text-center text-[11px] font-semibold border transition-all ${
+                          className={`p-2 rounded-lg text-center text-[11px] font-semibold border transition-all cursor-pointer ${
                             relationship === rel.id
                               ? 'border-teal-700 bg-teal-50 text-teal-800'
                               : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
@@ -414,11 +433,60 @@ export default function ReferralPortal({
                   </div>
                 </div>
 
-                {/* Participant Details Section */}
+                {/* Participant Details & Referral Program Section */}
                 <div className="space-y-4 pt-2">
                   <h4 className="text-xs font-bold text-teal-800 uppercase tracking-wider pb-1 border-b border-slate-100 flex items-center gap-1.5">
-                    <ShieldCheck size={14} /> 2. Participant Seeking NDIS Support
+                    <ShieldCheck size={14} /> 2. Participant Details & Care Program
                   </h4>
+
+                  {/* Referral Program Selector (NDIS / Support at Home / Both) */}
+                  <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
+                    <label className="block text-xs font-bold text-[#0b2240] uppercase tracking-wide">
+                      Select Referral Type / Care Program *
+                    </label>
+                    <p className="text-[11px] text-slate-500 mb-2">
+                      Choose whether you are submitting an NDIS referral, a Support at Home referral, or a combined care package.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {[
+                        { 
+                          id: 'ndis', 
+                          title: 'NDIS Referral', 
+                          desc: 'Disability support for eligible NDIS participants' 
+                        },
+                        { 
+                          id: 'support_at_home', 
+                          title: 'Support at Home Referral', 
+                          desc: 'Aged care and in-home support for seniors' 
+                        },
+                        { 
+                          id: 'both', 
+                          title: 'Both NDIS & Support at Home', 
+                          desc: 'Combined or dual care support package' 
+                        }
+                      ].map((type) => (
+                        <div
+                          key={type.id}
+                          onClick={() => setReferralType(type.id as any)}
+                          className={`p-3 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                            referralType === type.id
+                              ? 'border-teal-700 bg-teal-50/70 shadow-xs'
+                              : 'border-slate-200 bg-white hover:border-slate-300'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-[#0b2240]">{type.title}</span>
+                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                              referralType === type.id ? 'border-teal-700 bg-teal-700' : 'border-slate-300'
+                            }`}>
+                              {referralType === type.id && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                            </div>
+                          </div>
+                          <p className="text-[10px] text-slate-500 mt-1 leading-relaxed">{type.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
@@ -447,6 +515,33 @@ export default function ReferralPortal({
                       />
                     </div>
                     <div>
+                      <label className="block text-xs font-semibold text-slate-600 mb-1.5">Gender</label>
+                      <select
+                        value={participantGender}
+                        onChange={(e) => setParticipantGender(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-teal-700"
+                      >
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Non-binary">Non-binary</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-600 mb-1.5">Primary Disability / Health Condition *</label>
+                      <input
+                        type="text"
+                        required
+                        value={primaryDisability}
+                        onChange={(e) => setPrimaryDisability(e.target.value)}
+                        placeholder="e.g. Autism, Stroke recovery, Frailty"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-teal-700"
+                      />
+                    </div>
+                    <div>
                       <label className="block text-xs font-semibold text-slate-600 mb-1.5">NDIS Number (Optional)</label>
                       <input
                         type="text"
@@ -456,75 +551,122 @@ export default function ReferralPortal({
                         className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-teal-700"
                       />
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-600 mb-1.5">Primary Disability & Diagnosis *</label>
+                      <label className="block text-xs font-semibold text-slate-600 mb-1.5">Support at Home / Aged Care Ref ID (Optional)</label>
                       <input
                         type="text"
-                        required
-                        value={primaryDisability}
-                        onChange={(e) => setPrimaryDisability(e.target.value)}
-                        placeholder="e.g. Autism, Down Syndrome, Physical Disability"
+                        value={supportAtHomeNumber}
+                        onChange={(e) => setSupportAtHomeNumber(e.target.value)}
+                        placeholder="e.g. AC-998822"
                         className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-teal-700"
                       />
                     </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-600 mb-1.5">Preferred Contact Method</label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {[
-                          { id: 'phone', label: 'Phone Call' },
-                          { id: 'email', label: 'Email' },
-                          { id: 'any', label: 'Any Option' }
-                        ].map((c) => (
-                          <button
-                            key={c.id}
-                            type="button"
-                            onClick={() => setPreferredContact(c.id as any)}
-                            className={`p-2 rounded-lg text-center text-[11px] font-semibold border transition-all ${
-                              preferredContact === c.id
-                                ? 'border-teal-700 bg-teal-50 text-teal-800'
-                                : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
-                            }`}
-                          >
-                            {c.label}
-                          </button>
-                        ))}
-                      </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1.5">Preferred Contact Method</label>
+                    <div className="grid grid-cols-3 gap-2 max-w-md">
+                      {[
+                        { id: 'phone', label: 'Phone Call' },
+                        { id: 'email', label: 'Email' },
+                        { id: 'any', label: 'Any Option' }
+                      ].map((c) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => setPreferredContact(c.id as any)}
+                          className={`p-2 rounded-lg text-center text-[11px] font-semibold border transition-all cursor-pointer ${
+                            preferredContact === c.id
+                              ? 'border-teal-700 bg-teal-50 text-teal-800'
+                              : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          {c.label}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
 
                 {/* Services Requested Selection Checkboxes */}
                 <div className="space-y-4 pt-2">
-                  <h4 className="text-xs font-bold text-teal-800 uppercase tracking-wider pb-1 border-b border-slate-100">
-                    3. Select Services Needed
-                  </h4>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-1 border-b border-slate-100">
+                    <h4 className="text-xs font-bold text-teal-800 uppercase tracking-wider">
+                      3. Select Services Needed (NDIS & Support at Home)
+                    </h4>
+                    <span className="text-[11px] text-slate-500 italic">
+                      You can submit referrals for both NDIS and Support at Home services together.
+                    </span>
+                  </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {SERVICES_DATA.map((service) => (
-                      <div
-                        key={service.id}
-                        onClick={() => handleServiceCheckbox(service.id)}
-                        className={`p-3 rounded-xl border-2 transition-all cursor-pointer flex items-start gap-3 select-none ${
-                          selectedServices.includes(service.id)
-                            ? 'border-teal-600 bg-teal-50/20'
-                            : 'border-slate-150 bg-slate-50 hover:bg-slate-100/70 hover:border-slate-300'
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedServices.includes(service.id)}
-                          onChange={() => {}} // Handled by div click
-                          className="mt-0.5 accent-teal-700 cursor-pointer"
-                        />
-                        <div>
-                          <p className="text-xs font-bold text-[#0b2240]">{service.title}</p>
-                          <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">{service.shortDescription}</p>
+                  {/* NDIS Services Section */}
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-bold text-[#0b2240] uppercase tracking-wider flex items-center gap-1.5 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-100 w-fit">
+                      <CheckSquare size={13} className="text-teal-700" /> NDIS Services
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {SERVICES_DATA.map((service) => (
+                        <div
+                          key={service.id}
+                          onClick={() => handleServiceCheckbox(service.id)}
+                          className={`p-3 rounded-xl border-2 transition-all cursor-pointer flex items-start gap-3 select-none ${
+                            selectedServices.includes(service.id)
+                              ? 'border-teal-600 bg-teal-50/30 shadow-xs'
+                              : 'border-slate-150 bg-slate-50 hover:bg-slate-100/70 hover:border-slate-300'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedServices.includes(service.id)}
+                            onChange={() => {}} // Handled by div click
+                            className="mt-0.5 accent-teal-700 cursor-pointer"
+                          />
+                          <div>
+                            <p className="text-xs font-bold text-[#0b2240]">{service.title}</p>
+                            <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">{service.shortDescription}</p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Support at Home Services Section */}
+                  <div className="space-y-2 pt-2">
+                    <p className="text-[11px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200/60 w-fit">
+                      <CheckSquare size={13} className="text-amber-600" /> Support at Home Services
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {[
+                        { id: 'sah-domestic', title: 'Domestic Assistance', desc: 'Housekeeping, cleaning, laundry & meal prep.' },
+                        { id: 'sah-personal', title: 'Personal Care & Hygiene', desc: 'Showering, dressing, grooming & mobility.' },
+                        { id: 'sah-nursing', title: 'Clinical & Nursing Care', desc: 'RN nursing visits, wound management & care.' },
+                        { id: 'sah-gardening', title: 'Home Maintenance & Repair', desc: 'Safety modifications, gardening & home repairs.' },
+                        { id: 'sah-allied', title: 'Allied Health & Therapy', desc: 'Physiotherapy, OT, podiatry & speech therapy.' },
+                        { id: 'sah-transport', title: 'Transport & Outings', desc: 'Travel to doctor appointments, shopping & socials.' },
+                        { id: 'sah-management', title: 'Care Management', desc: 'Package coordination, care reviews & partner matching.' }
+                      ].map((service) => (
+                        <div
+                          key={service.id}
+                          onClick={() => handleServiceCheckbox(service.id)}
+                          className={`p-3 rounded-xl border-2 transition-all cursor-pointer flex items-start gap-3 select-none ${
+                            selectedServices.includes(service.id)
+                              ? 'border-amber-500 bg-amber-50/40 shadow-xs'
+                              : 'border-slate-150 bg-slate-50 hover:bg-slate-100/70 hover:border-slate-300'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedServices.includes(service.id)}
+                            onChange={() => {}} // Handled by div click
+                            className="mt-0.5 accent-amber-600 cursor-pointer"
+                          />
+                          <div>
+                            <p className="text-xs font-bold text-[#0b2240]">{service.title}</p>
+                            <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">{service.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -537,7 +679,7 @@ export default function ReferralPortal({
                     rows={4}
                     value={additionalInfo}
                     onChange={(e) => setAdditionalInfo(e.target.value)}
-                    placeholder="Provide details about care times, housing goals, assistive equipment used, or prefilled NDIS plan summaries..."
+                    placeholder="Provide details about care times, housing goals, assistive equipment used, or prefilled NDIS / Support at Home summaries..."
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-teal-700"
                   ></textarea>
                 </div>
@@ -712,9 +854,10 @@ export default function ReferralPortal({
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider">
+                    <th className="p-3">Program Type</th>
                     <th className="p-3">Participant & Age</th>
                     <th className="p-3">Referrer Details</th>
-                    <th className="p-3">Disability Group</th>
+                    <th className="p-3">Disability / Diagnosis</th>
                     <th className="p-3">Services Matching</th>
                     <th className="p-3">Status</th>
                     <th className="p-3 text-right">Actions</th>
@@ -724,6 +867,21 @@ export default function ReferralPortal({
                   {filteredSubmissions.length > 0 ? (
                     filteredSubmissions.map((sub) => (
                       <tr key={sub.id} className="hover:bg-slate-50/50 transition-colors">
+                        <td className="p-3">
+                          <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${
+                            sub.referralType === 'support_at_home'
+                              ? 'bg-amber-100 text-amber-800 border-amber-200'
+                              : sub.referralType === 'both'
+                              ? 'bg-purple-100 text-purple-800 border-purple-200'
+                              : 'bg-teal-100 text-teal-800 border-teal-200'
+                          }`}>
+                            {sub.referralType === 'support_at_home' 
+                              ? 'Support at Home' 
+                              : sub.referralType === 'both' 
+                              ? 'NDIS & Support at Home' 
+                              : 'NDIS'}
+                          </span>
+                        </td>
                         <td className="p-3">
                           <p className="font-bold text-slate-800">{sub.participantName}</p>
                           <p className="text-[10px] text-slate-400 mt-0.5">{sub.participantAge} yrs • {sub.participantGender}</p>
@@ -739,7 +897,11 @@ export default function ReferralPortal({
                         <td className="p-3">
                           <div className="flex flex-wrap gap-1">
                             {sub.requestedServices.map((sid) => (
-                              <span key={sid} className="bg-teal-50 text-teal-800 text-[9px] font-bold px-1.5 py-0.5 rounded border border-teal-100">
+                              <span key={sid} className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${
+                                sid.startsWith('sah-')
+                                  ? 'bg-amber-50 text-amber-800 border-amber-200'
+                                  : 'bg-teal-50 text-teal-800 border-teal-100'
+                              }`}>
                                 {sid.toUpperCase()}
                               </span>
                             ))}
@@ -792,7 +954,7 @@ export default function ReferralPortal({
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={6} className="p-8 text-center text-slate-400">
+                      <td colSpan={7} className="p-8 text-center text-slate-400">
                         No intake inquiries found matching current filters. Try adding a mock demo record!
                       </td>
                     </tr>
@@ -816,7 +978,7 @@ export default function ReferralPortal({
                   <button
                     type="button"
                     onClick={() => setSelectedDetailSubmission(null)}
-                    className="text-xs text-slate-400 hover:text-slate-600 font-semibold"
+                    className="text-xs text-slate-400 hover:text-slate-600 font-semibold cursor-pointer"
                   >
                     Close Detail Panel
                   </button>
@@ -824,11 +986,13 @@ export default function ReferralPortal({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-700">
                   <div className="space-y-2">
-                    <p className="font-bold text-slate-800 text-xs border-b border-slate-100 pb-1">Client Profiles</p>
+                    <p className="font-bold text-slate-800 text-xs border-b border-slate-100 pb-1">Client Profile & Program</p>
+                    <p><strong className="text-slate-500">Program Stream:</strong> <span className="uppercase font-bold text-teal-800">{selectedDetailSubmission.referralType?.replace('_', ' ') || 'NDIS'}</span></p>
                     <p><strong className="text-slate-500">Full Name:</strong> {selectedDetailSubmission.participantName}</p>
                     <p><strong className="text-slate-500">Age / Gender:</strong> {selectedDetailSubmission.participantAge} years old • {selectedDetailSubmission.participantGender}</p>
                     <p><strong className="text-slate-500">NDIS Code:</strong> {selectedDetailSubmission.ndisNumber || 'Not specified'}</p>
-                    <p><strong className="text-slate-500">Primary Disability:</strong> {selectedDetailSubmission.primaryDisability}</p>
+                    <p><strong className="text-slate-500">Support at Home ID:</strong> {selectedDetailSubmission.supportAtHomeNumber || 'Not specified'}</p>
+                    <p><strong className="text-slate-500">Primary Disability / Diagnosis:</strong> {selectedDetailSubmission.primaryDisability}</p>
                   </div>
                   <div className="space-y-2">
                     <p className="font-bold text-slate-800 text-xs border-b border-slate-100 pb-1">Referrer Contact</p>

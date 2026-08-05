@@ -155,10 +155,12 @@ app.post("/api/send-email", async (req, res) => {
       referrerEmail,
       referrerPhone,
       relationship,
+      referralType,
       participantName,
       participantAge,
       participantGender,
       ndisNumber,
+      supportAtHomeNumber,
       primaryDisability,
       requestedServices,
       preferredContact,
@@ -176,6 +178,15 @@ app.post("/api/send-email", async (req, res) => {
             else if (serviceId === 'community-hubs') serviceLabel = 'Community & Social Hubs';
             else if (serviceId === 'in-home-care') serviceLabel = 'In-Home Care Support';
             else if (serviceId === 'support-coordination') serviceLabel = 'Support Coordination';
+            else if (serviceId === 'sda') serviceLabel = 'Specialist Disability Accommodation (SDA)';
+            else if (serviceId === 'rec-social') serviceLabel = 'Social & Recreation Programs';
+            else if (serviceId === 'sah-domestic') serviceLabel = 'Domestic Assistance (Support at Home)';
+            else if (serviceId === 'sah-personal') serviceLabel = 'Personal Care (Support at Home)';
+            else if (serviceId === 'sah-nursing') serviceLabel = 'Nursing Care (Support at Home)';
+            else if (serviceId === 'sah-gardening') serviceLabel = 'Home Maintenance (Support at Home)';
+            else if (serviceId === 'sah-allied') serviceLabel = 'Allied Health (Support at Home)';
+            else if (serviceId === 'sah-transport') serviceLabel = 'Transport & Outings (Support at Home)';
+            else if (serviceId === 'sah-management') serviceLabel = 'Care Management (Support at Home)';
             return `<span style="display: inline-block; background-color: #ccfbf1; color: #0f766e; font-weight: bold; font-size: 11px; padding: 4px 10px; border-radius: 12px; margin-right: 6px; margin-bottom: 6px;">${serviceLabel}</span>`;
           }).join('')}
         </div>
@@ -194,11 +205,17 @@ app.post("/api/send-email", async (req, res) => {
       `;
     }
 
+    const typeDisplay = referralType === 'both' 
+      ? 'NDIS & Support at Home (Combined)' 
+      : referralType === 'support_at_home' 
+      ? 'Support at Home Referral' 
+      : 'NDIS Referral';
+
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
         <div style="background-color: #0f766e; padding: 24px; text-align: center; color: white;">
-          <h2 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">New NDIS Referral Intake</h2>
-          <p style="margin: 4px 0 0 0; font-size: 14px; color: #ccfbf1;">Synergy Care Link Portal Submission</p>
+          <h2 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">New Client Referral Intake</h2>
+          <p style="margin: 4px 0 0 0; font-size: 14px; color: #ccfbf1;">Synergy Care Link Portal Submission • <strong style="color: #f59e0b;">${typeDisplay}</strong></p>
         </div>
         <div style="padding: 24px; background-color: #f8fafc;">
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
@@ -206,7 +223,11 @@ app.post("/api/send-email", async (req, res) => {
               <th colspan="2" style="text-align: left; padding: 12px 16px; font-size: 14px; font-weight: bold; color: #1e293b; border-bottom: 1px solid #e2e8f0;">Participant Details</th>
             </tr>
             <tr>
-              <td style="padding: 10px 16px; font-size: 13px; color: #64748b; width: 35%; border-bottom: 1px solid #f1f5f9;">Name:</td>
+              <td style="padding: 10px 16px; font-size: 13px; color: #64748b; width: 35%; border-bottom: 1px solid #f1f5f9;">Referral Program:</td>
+              <td style="padding: 10px 16px; font-size: 13px; color: #0f766e; font-weight: 700; border-bottom: 1px solid #f1f5f9;">${typeDisplay}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; font-size: 13px; color: #64748b; border-bottom: 1px solid #f1f5f9;">Name:</td>
               <td style="padding: 10px 16px; font-size: 13px; color: #0f172a; font-weight: 600; border-bottom: 1px solid #f1f5f9;">${participantName}</td>
             </tr>
             <tr>
@@ -215,10 +236,14 @@ app.post("/api/send-email", async (req, res) => {
             </tr>
             <tr>
               <td style="padding: 10px 16px; font-size: 13px; color: #64748b; border-bottom: 1px solid #f1f5f9;">NDIS Number:</td>
-              <td style="padding: 10px 16px; font-size: 13px; color: #334155; font-family: monospace; border-bottom: 1px solid #f1f5f9;">${ndisNumber || 'Not provided'}</td>
+              <td style="padding: 10px 16px; font-size: 13px; color: #334155; font-family: monospace; border-bottom: 1px solid #f1f5f9;">${ndisNumber || 'N/A'}</td>
             </tr>
             <tr>
-              <td style="padding: 10px 16px; font-size: 13px; color: #64748b; border-bottom: 1px solid #f1f5f9;">Primary Disability:</td>
+              <td style="padding: 10px 16px; font-size: 13px; color: #64748b; border-bottom: 1px solid #f1f5f9;">Support at Home Ref ID:</td>
+              <td style="padding: 10px 16px; font-size: 13px; color: #334155; font-family: monospace; border-bottom: 1px solid #f1f5f9;">${supportAtHomeNumber || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; font-size: 13px; color: #64748b; border-bottom: 1px solid #f1f5f9;">Primary Condition / Disability:</td>
               <td style="padding: 10px 16px; font-size: 13px; color: #334155; font-weight: 600; border-bottom: 1px solid #f1f5f9;">${primaryDisability}</td>
             </tr>
             

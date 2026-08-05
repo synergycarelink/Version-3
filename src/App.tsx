@@ -4,7 +4,6 @@ import Footer from './components/Footer';
 import NDISCalculator from './components/NDISCalculator';
 import SupportAtHomeCalculator from './components/SupportAtHomeCalculator';
 import ReferralPortal from './components/ReferralPortal';
-import AIChatBot from './components/AIChatBot';
 import { SERVICES_DATA } from './data/services';
 import { AccessibilitySettings, NDISService } from './types';
 import { 
@@ -624,10 +623,10 @@ export default function App() {
                 Intake & Onboarding
               </span>
               <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#0b2240]">
-                NDIS Client Referral Portal
+                Client Referral Portal
               </h2>
               <p className="text-slate-500 text-sm">
-                Easily register as a participant, or refer an NDIS client. Care coordinators, medical providers, or parents can submit client assessments here.
+                Easily submit a referral for NDIS or Support at Home care services. Care coordinators, medical providers, family members, or self-referrals can submit client assessments here.
               </p>
             </div>
 
@@ -743,9 +742,6 @@ export default function App() {
 
       {/* Footer coordinates section triggers */}
       <Footer onNavigate={handleNavigate} />
-
-      {/* Floating AI Intake Chat Widget */}
-      <AIChatBot highContrast={settings.highContrast} />
 
     </div>
   );
