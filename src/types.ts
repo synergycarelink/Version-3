@@ -41,3 +41,4 @@ export interface PlanCalculatorInput {
   weeklyCapacityBudget: number;
   supportHoursRequested: number;
 }
+

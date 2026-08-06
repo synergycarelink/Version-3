@@ -15,8 +15,8 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div className="w-9 h-9 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold">
               <HeartHandshake size={20} />
             </div>
-            <span className="text-white font-display text-lg font-bold tracking-tight">
-              SYNERGY <span className="text-teal-400">CARE LINK</span>
+            <span className="text-white font-display text-lg font-bold tracking-tight whitespace-nowrap">
+              Synergy Care Link
             </span>
           </div>
           <p className="text-xs text-slate-400 leading-relaxed">

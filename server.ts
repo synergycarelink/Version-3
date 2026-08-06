@@ -12,6 +12,19 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+app.disable('x-powered-by');
+
+// Security headers middleware for enterprise firewall & browser safety compliance
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(self)");
+  res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  next();
+});
+
 app.use(compression());
 app.use(express.json());
 
@@ -141,6 +154,202 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
+// File storage helper for referrals
+const REFERRALS_FILE = path.join(process.cwd(), "data-referrals.json");
+const CONSULTATIONS_FILE = path.join(process.cwd(), "data-consultations.json");
+
+function getStoredConsultations(): any[] {
+  try {
+    if (fs.existsSync(CONSULTATIONS_FILE)) {
+      const content = fs.readFileSync(CONSULTATIONS_FILE, "utf8");
+      return JSON.parse(content);
+    }
+  } catch (err) {
+    console.error("Failed to read consultations file:", err);
+  }
+  return [];
+}
+
+function saveConsultationToDisk(consultation: any) {
+  try {
+    const list = getStoredConsultations();
+    list.unshift(consultation);
+    fs.writeFileSync(CONSULTATIONS_FILE, JSON.stringify(list, null, 2), "utf8");
+  } catch (err) {
+    console.error("Failed to save consultation to disk:", err);
+  }
+}
+
+// Free Consultation Booking API Endpoints
+app.get("/api/consultations", (req, res) => {
+  res.json(getStoredConsultations());
+});
+
+app.post("/api/consultations", async (req, res) => {
+  const booking = req.body;
+  if (booking && booking.fullName) {
+    const bookingWithId = {
+      ...booking,
+      id: booking.id || 'CNS-' + Math.floor(100000 + Math.random() * 900000),
+      createdAt: booking.createdAt || new Date().toISOString()
+    };
+    saveConsultationToDisk(bookingWithId);
+
+    // Send SMTP notification for Consultation
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+    const smtpPort = parseInt(process.env.SMTP_PORT || "587");
+
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #0b2240; padding: 24px; text-align: center; color: white;">
+          <h2 style="margin: 0; font-size: 20px; font-weight: bold;">New Free Consultation Request</h2>
+          <p style="margin: 4px 0 0 0; font-size: 13px; color: #f59e0b; font-weight: bold;">Synergy Care Link Care Consultation</p>
+        </div>
+        <div style="padding: 24px; background-color: #f8fafc;">
+          <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b; width: 35%;">Booking ID:</td><td style="padding: 10px 16px; font-weight: bold; color: #0b2240;">${bookingWithId.id}</td></tr>
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Full Name:</td><td style="padding: 10px 16px; font-weight: bold; color: #0f172a;">${bookingWithId.fullName}</td></tr>
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Phone:</td><td style="padding: 10px 16px; color: #0f766e; font-weight: bold;">${bookingWithId.phone}</td></tr>
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Email:</td><td style="padding: 10px 16px; color: #334155;">${bookingWithId.email}</td></tr>
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Discussion Topic:</td><td style="padding: 10px 16px; color: #0b2240; font-weight: bold;">${bookingWithId.topic}</td></tr>
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Format:</td><td style="padding: 10px 16px; text-transform: uppercase; font-weight: bold; color: #0f766e;">${bookingWithId.consultationType}</td></tr>
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Preferred Date:</td><td style="padding: 10px 16px; color: #334155;">${bookingWithId.preferredDate || 'Not specified'}</td></tr>
+            <tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Preferred Window:</td><td style="padding: 10px 16px; color: #334155;">${bookingWithId.preferredTime}</td></tr>
+            ${bookingWithId.notes ? `<tr><td style="padding: 10px 16px; font-weight: bold; color: #64748b;">Notes:</td><td style="padding: 10px 16px; color: #475569;">${bookingWithId.notes}</td></tr>` : ''}
+          </table>
+          <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 16px;">
+            Submitted on: ${bookingWithId.createdAt}
+          </div>
+        </div>
+      </div>
+    `;
+
+    if (smtpUser && smtpPass) {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: { user: smtpUser, pass: smtpPass },
+          tls: { rejectUnauthorized: false }
+        });
+
+        await transporter.sendMail({
+          from: `"Synergy Care Link" <${smtpUser}>`,
+          to: "admin@synergycarelink.com",
+          subject: `📅 [Free Consultation Booking] - ${bookingWithId.fullName} (${bookingWithId.topic})`,
+          html: emailHtml,
+        });
+        console.log("[SMTP] Consultation notification sent via email to admin@synergycarelink.com");
+      } catch (err: any) {
+        const errMsg = err?.message || String(err);
+        if (errMsg.includes('5.7.139') || errMsg.includes('SmtpClientAuthentication')) {
+          console.error("[SMTP Error 535 5.7.139] Microsoft 365 / Outlook has SMTP AUTH disabled for this tenant or account.");
+          console.error("To fix M365 SMTP: 1) Go to M365 Admin Center -> Active Users -> Select User -> Mail -> Manage email apps -> Enable 'Authenticated SMTP'.");
+          console.error("Alternatively, use Gmail with a 16-character App Password (SMTP_HOST=smtp.gmail.com, SMTP_PORT=587).");
+        } else {
+          console.error("[SMTP Error] Failed to send consultation email:", errMsg);
+        }
+      }
+    } else {
+      console.log("[SMTP] Consultation saved to database; SMTP credentials not set yet.");
+    }
+
+    return res.json({ success: true, booking: bookingWithId });
+  }
+  res.status(400).json({ error: "Invalid booking data" });
+});
+
+
+function getStoredReferrals(): any[] {
+  try {
+    if (fs.existsSync(REFERRALS_FILE)) {
+      const content = fs.readFileSync(REFERRALS_FILE, "utf8");
+      return JSON.parse(content);
+    }
+  } catch (err) {
+    console.error("Failed to read referrals file:", err);
+  }
+  return [];
+}
+
+function saveReferralToDisk(referral: any) {
+  try {
+    const list = getStoredReferrals();
+    const index = list.findIndex((item: any) => item.id === referral.id);
+    if (index >= 0) {
+      list[index] = referral;
+    } else {
+      list.unshift(referral);
+    }
+    fs.writeFileSync(REFERRALS_FILE, JSON.stringify(list, null, 2), "utf8");
+  } catch (err) {
+    console.error("Failed to save referral to disk:", err);
+  }
+}
+
+// SMTP Status route to check credential readiness and test connection
+app.get("/api/smtp-status", async (req, res) => {
+  const configured = !!(process.env.SMTP_USER && process.env.SMTP_PASS);
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+  const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+  const smtpPort = parseInt(process.env.SMTP_PORT || "587");
+
+  let connectionStatus = "untested";
+  let connectionError: string | null = null;
+  let fixAdvice: string | null = null;
+
+  if (configured && req.query.test === "true") {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: { user: smtpUser!, pass: smtpPass! },
+        tls: { rejectUnauthorized: false }
+      });
+      await transporter.verify();
+      connectionStatus = "connected";
+    } catch (err: any) {
+      connectionStatus = "failed";
+      connectionError = err?.message || String(err);
+      if (connectionError?.includes("5.7.139") || connectionError?.includes("SmtpClientAuthentication")) {
+        fixAdvice = "Microsoft 365 Tenant has Authenticated SMTP disabled for this user. Enable 'Authenticated SMTP' in M365 Admin Center -> Users -> Active Users -> Mail -> Manage email apps, OR switch to Gmail using a 16-character App Password (SMTP_HOST=smtp.gmail.com).";
+      } else if (connectionError?.includes("535") || connectionError?.includes("BadCredentials")) {
+        fixAdvice = "SMTP authentication failed. Please double-check your username and password or App Password in AI Studio Settings.";
+      }
+    }
+  }
+
+  res.json({
+    configured,
+    smtpHost,
+    smtpPort,
+    smtpUser: smtpUser ? smtpUser.replace(/(?<=.{2}).(?=.*@)/g, '*') : null,
+    targetEmail: "admin@synergycarelink.com",
+    connectionStatus,
+    connectionError,
+    fixAdvice
+  });
+});
+
+// Get and Save referrals routes
+app.get("/api/referrals", (req, res) => {
+  res.json(getStoredReferrals());
+});
+
+app.post("/api/referrals", (req, res) => {
+  const referral = req.body;
+  if (referral && referral.id) {
+    saveReferralToDisk(referral);
+    return res.json({ success: true, referrals: getStoredReferrals() });
+  }
+  res.status(400).json({ error: "Invalid referral data" });
+});
+
 // Send Email route
 app.post("/api/send-email", async (req, res) => {
   try {
@@ -148,6 +357,9 @@ app.post("/api/send-email", async (req, res) => {
     if (!referral || !referral.participantName || !referral.referrerEmail) {
       return res.status(400).json({ error: "Missing required referral fields." });
     }
+
+    // Always save referral to server disk first so data is never lost
+    saveReferralToDisk(referral);
 
     const {
       id,
@@ -289,35 +501,49 @@ app.post("/api/send-email", async (req, res) => {
       </div>
     `;
 
-    // Try to send via nodemailer
+    // Check SMTP configuration
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
     const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
     const smtpPort = parseInt(process.env.SMTP_PORT || "587");
 
     if (smtpUser && smtpPass) {
-      console.log(`[SMTP] Attempting real email send to admin@synergycarelink.com using user: ${smtpUser}`);
-      const transporter = nodemailer.createTransport({
-        host: smtpHost,
-        port: smtpPort,
-        secure: smtpPort === 465, // true for 465, false for other ports
-        auth: {
-          user: smtpUser,
-          pass: smtpPass,
-        },
-      });
+      try {
+        console.log(`[SMTP] Attempting real email send to admin@synergycarelink.com using user: ${smtpUser}`);
+        const transporter = nodemailer.createTransport({
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+          tls: { rejectUnauthorized: false }
+        });
 
-      await transporter.sendMail({
-        from: `"Synergy Care Link Portal" <${smtpUser}>`,
-        to: "admin@synergycarelink.com",
-        subject: `🚨 [New Referral Intake] - ${participantName}`,
-        html: emailHtml,
-      });
+        await transporter.sendMail({
+          from: `"Synergy Care Link Portal" <${smtpUser}>`,
+          to: "admin@synergycarelink.com",
+          subject: `🚨 [New Referral Intake] - ${participantName}`,
+          html: emailHtml,
+        });
 
-      console.log("[SMTP] Email sent successfully!");
-      return res.json({ success: true, method: "smtp" });
+        console.log("[SMTP] Email sent successfully!");
+        return res.json({ 
+          success: true, 
+          method: "smtp",
+          message: "Email alert sent successfully to admin@synergycarelink.com via SMTP."
+        });
+      } catch (smtpErr: any) {
+        console.error("[SMTP Error] Failed to send email via SMTP server:", smtpErr);
+        return res.json({
+          success: true,
+          method: "smtp_error",
+          warning: `Referral saved to database, but SMTP delivery failed (${smtpErr.message || "Authentication error"}). Please verify SMTP_USER and SMTP_PASS in AI Studio Settings.`
+        });
+      }
     } else {
-      console.warn("[SMTP] SMTP credentials (SMTP_USER/SMTP_PASS) are missing. Email simulated and logged to console.");
+      console.warn("[SMTP] SMTP credentials (SMTP_USER/SMTP_PASS) are missing. Referral saved to disk; email simulated to console.");
       console.log("------------------ SIMULATED EMAIL ------------------");
       console.log("TO: admin@synergycarelink.com");
       console.log(`SUBJECT: 🚨 [New Referral Intake] - ${participantName}`);
@@ -326,7 +552,7 @@ app.post("/api/send-email", async (req, res) => {
       return res.json({
         success: true,
         method: "mock",
-        warning: "SMTP E-mail credentials are not yet configured in AI Studio, so the intake details have been logged to the container terminal instead."
+        warning: "Referral logged safely in database! To send live email alerts to admin@synergycarelink.com, please add SMTP_USER and SMTP_PASS in AI Studio Settings."
       });
     }
   } catch (error: any) {

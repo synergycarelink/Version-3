@@ -10,7 +10,9 @@ import {
   Menu, 
   X, 
   HeartHandshake,
-  CheckCircle2
+  CheckCircle2,
+  Calendar,
+  Sparkles
 } from 'lucide-react';
 import { AccessibilitySettings } from '../types';
 
@@ -19,9 +21,10 @@ interface HeaderProps {
   setSettings: React.Dispatch<React.SetStateAction<AccessibilitySettings>>;
   onNavigate: (sectionId: string) => void;
   activeSection: string;
+  onOpenConsultationModal?: () => void;
 }
 
-export default function Header({ settings, setSettings, onNavigate, activeSection }: HeaderProps) {
+export default function Header({ settings, setSettings, onNavigate, activeSection, onOpenConsultationModal }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAccessPanel, setShowAccessPanel] = useState(false);
 
@@ -83,10 +86,6 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
         </div>
         
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1 text-[11px] bg-emerald-600/30 text-emerald-300 px-2 py-0.5 rounded font-medium border border-emerald-500/20">
-            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-            Registered NDIS Provider
-          </span>
           <button 
             onClick={() => setShowAccessPanel(!showAccessPanel)}
             className="flex items-center gap-1 text-xs hover:text-amber-400 font-medium transition-colors bg-white/10 px-2.5 py-1 rounded border border-white/20"
@@ -208,11 +207,11 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
             <HeartHandshake size={22} className="stroke-[2.5]" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[#0b2240] font-display text-lg sm:text-xl font-bold tracking-tight leading-none group-hover:text-teal-700 transition-colors">
-              SYNERGY
+            <span className="text-[#0b2240] font-display text-lg sm:text-xl font-bold tracking-tight leading-none group-hover:text-teal-700 transition-colors whitespace-nowrap">
+              Synergy Care Link
             </span>
-            <span className="text-slate-500 text-xs sm:text-[13px] font-semibold tracking-wide flex items-center gap-1">
-              Care Link <span className="text-teal-700 font-bold font-sans">|</span> NDIS Services
+            <span className="text-slate-500 text-[11px] font-semibold tracking-wide flex items-center gap-1 mt-1">
+              NDIS & Support at Home Service Provider
             </span>
           </div>
         </a>
@@ -233,9 +232,19 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
             </button>
           ))}
           
+          {onOpenConsultationModal && (
+            <button
+              onClick={onOpenConsultationModal}
+              className="ml-2 bg-amber-500 hover:bg-amber-400 text-[#0b2240] px-3.5 py-2 rounded-lg text-xs font-bold shadow hover:shadow-md transition-all duration-300 flex items-center gap-1.5 cursor-pointer"
+            >
+              <Calendar size={14} />
+              Book Free Consultation
+            </button>
+          )}
+
           <button 
             onClick={() => onNavigate('referrals')}
-            className="ml-4 bg-teal-700 hover:bg-amber-500 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow hover:shadow-md transition-all duration-300 animate-pulse-gentle"
+            className="ml-2 bg-teal-700 hover:bg-teal-800 text-white px-3.5 py-2 rounded-lg text-xs font-semibold shadow hover:shadow-md transition-all duration-300"
           >
             Submit Referral
           </button>
@@ -272,13 +281,25 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
               {item.label}
             </button>
           ))}
-          <div className="pt-2 border-t border-slate-100">
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            {onOpenConsultationModal && (
+              <button
+                onClick={() => {
+                  onOpenConsultationModal();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-center bg-amber-500 text-[#0b2240] py-2.5 rounded-lg text-sm font-bold shadow flex items-center justify-center gap-2"
+              >
+                <Calendar size={16} />
+                Book Free Consultation
+              </button>
+            )}
             <button
               onClick={() => {
                 onNavigate('referrals');
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-center bg-teal-700 hover:bg-amber-500 text-white py-2.5 rounded-lg text-sm font-bold shadow transition-colors"
+              className="w-full text-center bg-teal-700 text-white py-2.5 rounded-lg text-sm font-bold shadow transition-colors"
             >
               Submit Referral
             </button>

@@ -4,6 +4,8 @@ import Footer from './components/Footer';
 import NDISCalculator from './components/NDISCalculator';
 import SupportAtHomeCalculator from './components/SupportAtHomeCalculator';
 import ReferralPortal from './components/ReferralPortal';
+import FreeConsultationModal from './components/FreeConsultationModal';
+import FreeConsultationBanner from './components/FreeConsultationBanner';
 import { SERVICES_DATA } from './data/services';
 import { AccessibilitySettings, NDISService } from './types';
 import { 
@@ -51,6 +53,15 @@ export default function App() {
 
   // Active expanded service modal
   const [selectedServiceDetail, setSelectedServiceDetail] = useState<NDISService | null>(null);
+
+  // Free Consultation Modal State
+  const [isConsultationModalOpen, setIsConsultationModalOpen] = useState<boolean>(false);
+  const [consultationModalTopic, setConsultationModalTopic] = useState<string | undefined>(undefined);
+
+  const handleOpenConsultation = (topic?: string) => {
+    setConsultationModalTopic(topic);
+    setIsConsultationModalOpen(true);
+  };
 
   // Service Category Filter (All / NDIS / Support at Home)
   const [serviceFilter, setServiceFilter] = useState<'all' | 'ndis' | 'support_at_home'>('all');
@@ -154,6 +165,7 @@ export default function App() {
         setSettings={setSettings} 
         onNavigate={handleNavigate}
         activeSection={activeSection}
+        onOpenConsultationModal={() => handleOpenConsultation()}
       />
 
       {/* Main Page Layout */}
@@ -298,6 +310,9 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* 2.5 FREE CARE CONSULTATION FEATURE HIGHLIGHT BANNER */}
+        <FreeConsultationBanner onOpenModal={handleOpenConsultation} />
 
 
         {/* 3. CORE SERVICES GRID SECTION */}
@@ -803,6 +818,13 @@ export default function App() {
 
       {/* Footer coordinates section triggers */}
       <Footer onNavigate={handleNavigate} />
+
+      {/* Free 1-on-1 Consultation Booking Modal */}
+      <FreeConsultationModal 
+        isOpen={isConsultationModalOpen} 
+        onClose={() => setIsConsultationModalOpen(false)} 
+        defaultTopic={consultationModalTopic}
+      />
 
     </div>
   );

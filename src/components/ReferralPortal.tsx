@@ -18,7 +18,9 @@ import {
   ShieldCheck,
   CheckCircle,
   HelpCircle,
-  Plus
+  Plus,
+  Mail,
+  AlertCircle
 } from 'lucide-react';
 
 interface ReferralPortalProps {
@@ -99,58 +101,91 @@ export default function ReferralPortal({
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedDetailSubmission, setSelectedDetailSubmission] = useState<ReferralSubmission | null>(null);
 
+  // Email & SMTP Diagnostics State
+  const [smtpStatus, setSmtpStatus] = useState<{ configured: boolean; targetEmail: string } | null>(null);
+  const [submissionEmailResult, setSubmissionEmailResult] = useState<{
+    method?: 'smtp' | 'mock' | 'smtp_error';
+    message?: string;
+    warning?: string;
+  } | null>(null);
+
   // Dashboard Login Password
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  // LocalStorage Database loading
+  // LocalStorage & Server Database loading
   useEffect(() => {
-    const stored = localStorage.getItem('synergy_referrals');
-    if (stored) {
-      setSubmissions(JSON.parse(stored));
-    } else {
-      // Seed with professional mock submissions for realistic dashboard view
-      const mockData: ReferralSubmission[] = [
-        {
-          id: 'ref-1',
-          referrerName: 'Sarah Jenkins',
-          referrerEmail: 's.jenkins@westernhealth.org.au',
-          referrerPhone: '0412 345 678',
-          relationship: 'health_professional',
-          referralType: 'ndis',
-          participantName: 'James Henderson',
-          participantAge: 29,
-          participantGender: 'Male',
-          ndisNumber: '430985214',
-          primaryDisability: 'Autism Spectrum Disorder & Intellectual Disability',
-          requestedServices: ['sil', 'community-hubs'],
-          preferredContact: 'phone',
-          additionalInfo: 'James is looking for an active shared house (SIL) near Parramatta with peers around his age. He is very social and loves music.',
-          submittedAt: new Date(Date.now() - 86400000 * 2).toLocaleString(),
-          status: 'reviewed'
-        },
-        {
-          id: 'ref-2',
-          referrerName: 'Robert Dow',
-          referrerEmail: 'robert.dow@gmail.com',
-          referrerPhone: '0499 888 777',
-          relationship: 'self',
-          referralType: 'support_at_home',
-          participantName: 'Margaret Dow',
-          participantAge: 76,
-          participantGender: 'Female',
-          supportAtHomeNumber: 'SAH-8822A',
-          primaryDisability: 'Mobility impairment & post-stroke recovery',
-          requestedServices: ['sah-domestic', 'sah-personal', 'sah-nursing'],
-          preferredContact: 'email',
-          additionalInfo: 'My mother needs 3 visits per week for showering, domestic assistance, and weekly registered nurse checkups.',
-          submittedAt: new Date(Date.now() - 3600000 * 5).toLocaleString(),
-          status: 'pending'
+    // Check SMTP Readiness
+    fetch('/api/smtp-status')
+      .then(r => r.json())
+      .then(data => setSmtpStatus(data))
+      .catch(err => console.warn('SMTP status check failed:', err));
+
+    // Fetch stored referrals from server
+    fetch('/api/referrals')
+      .then(r => r.json())
+      .then(serverData => {
+        if (Array.isArray(serverData) && serverData.length > 0) {
+          setSubmissions(prev => {
+            const map = new Map();
+            serverData.forEach((item: any) => map.set(item.id, item));
+            prev.forEach((item: any) => map.set(item.id, item));
+            const merged = Array.from(map.values());
+            localStorage.setItem('synergy_referrals', JSON.stringify(merged));
+            return merged;
+          });
+        } else {
+          const stored = localStorage.getItem('synergy_referrals');
+          if (stored) {
+            setSubmissions(JSON.parse(stored));
+          } else {
+            const mockData: ReferralSubmission[] = [
+              {
+                id: 'ref-1',
+                referrerName: 'Sarah Jenkins',
+                referrerEmail: 's.jenkins@westernhealth.org.au',
+                referrerPhone: '0412 345 678',
+                relationship: 'health_professional',
+                referralType: 'ndis',
+                participantName: 'James Henderson',
+                participantAge: 29,
+                participantGender: 'Male',
+                ndisNumber: '430985214',
+                primaryDisability: 'Autism Spectrum Disorder & Intellectual Disability',
+                requestedServices: ['sil', 'community-hubs'],
+                preferredContact: 'phone',
+                additionalInfo: 'James is looking for an active shared house (SIL) near Parramatta with peers around his age. He is very social and loves music.',
+                submittedAt: new Date(Date.now() - 86400000 * 2).toLocaleString(),
+                status: 'reviewed'
+              },
+              {
+                id: 'ref-2',
+                referrerName: 'Robert Dow',
+                referrerEmail: 'robert.dow@gmail.com',
+                referrerPhone: '0499 888 777',
+                relationship: 'self',
+                referralType: 'support_at_home',
+                participantName: 'Margaret Dow',
+                participantAge: 76,
+                participantGender: 'Female',
+                supportAtHomeNumber: 'SAH-8822A',
+                primaryDisability: 'Mobility impairment & post-stroke recovery',
+                requestedServices: ['sah-domestic', 'sah-personal', 'sah-nursing'],
+                preferredContact: 'email',
+                additionalInfo: 'My mother needs 3 visits per week for showering, domestic assistance, and weekly registered nurse checkups.',
+                submittedAt: new Date(Date.now() - 3600000 * 5).toLocaleString(),
+                status: 'pending'
+              }
+            ];
+            localStorage.setItem('synergy_referrals', JSON.stringify(mockData));
+            setSubmissions(mockData);
+          }
         }
-      ];
-      localStorage.setItem('synergy_referrals', JSON.stringify(mockData));
-      setSubmissions(mockData);
-    }
+      })
+      .catch(() => {
+        const stored = localStorage.getItem('synergy_referrals');
+        if (stored) setSubmissions(JSON.parse(stored));
+      });
   }, []);
 
   const saveToStorage = (updatedList: ReferralSubmission[]) => {
@@ -196,16 +231,22 @@ export default function ReferralPortal({
         body: JSON.stringify(newSubmission),
       });
       
-      if (!emailRes.ok) {
-        console.error("Failed to send email through backend API.");
-      } else {
+      if (emailRes.ok) {
         const resData = await emailRes.json();
-        if (resData.warning) {
-          console.warn("[Email Warning]:", resData.warning);
-        }
+        setSubmissionEmailResult(resData);
+      } else {
+        const errData = await emailRes.json().catch(() => ({}));
+        setSubmissionEmailResult({
+          method: 'smtp_error',
+          warning: errData.error || 'Server returned an error when processing the email dispatch.'
+        });
       }
     } catch (err) {
       console.error("Error calling send-email endpoint:", err);
+      setSubmissionEmailResult({
+        method: 'smtp_error',
+        warning: 'Network connection issue contacting email server.'
+      });
     } finally {
       const updated = [newSubmission, ...submissions];
       saveToStorage(updated);
@@ -710,18 +751,54 @@ export default function ReferralPortal({
 
               </form>
             ) : (
-              <div className="text-center py-12 px-4 space-y-5 animate-fade-in">
+              <div className="text-center py-10 px-4 space-y-5 animate-fade-in">
                 <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
                   <CheckCircle size={40} className="stroke-[2.5]" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-display font-bold text-slate-800">Referral Received Successfully!</h3>
-                  <p className="text-sm text-slate-500 mt-2 max-w-lg mx-auto">
-                    Thank you for contacting Synergy Care Link. We have saved this intake inquiry and our Intake Coordinator will review details and call you back within 24 hours.
+                  <h3 className="text-2xl font-display font-bold text-slate-800">
+                    Referral Intake Logged Successfully!
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-2 max-w-lg mx-auto leading-relaxed">
+                    Thank you for contacting Synergy Care Link. Your client intake details for <strong className="text-teal-800 font-bold">{participantName}</strong> have been recorded in our intake database.
                   </p>
                 </div>
 
-                <div className="flex justify-center gap-3 pt-4">
+                {/* Email Alert Status Card */}
+                <div className="max-w-lg mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-2 shadow-xs">
+                  <div className="flex items-center justify-between border-b border-slate-200/80 pb-2">
+                    <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                      <Mail size={15} className="text-teal-600" />
+                      Email Alert Target: admin@synergycarelink.com
+                    </span>
+                    <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider ${
+                      submissionEmailResult?.method === 'smtp'
+                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                        : 'bg-amber-100 text-amber-800 border border-amber-300'
+                    }`}>
+                      {submissionEmailResult?.method === 'smtp' ? '✅ Delivered' : '⚠️ Action Required'}
+                    </span>
+                  </div>
+
+                  {submissionEmailResult?.method === 'smtp' ? (
+                    <div className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl flex items-start gap-2">
+                      <CheckCircle size={15} className="text-emerald-600 shrink-0 mt-0.5" />
+                      <span>An automated email notification was dispatched directly to <strong>admin@synergycarelink.com</strong> via SMTP!</span>
+                    </div>
+                  ) : (
+                    <div className="text-xs space-y-2 bg-amber-50/80 border border-amber-200 p-3 rounded-xl">
+                      <p className="text-slate-700 leading-relaxed font-medium">
+                        {submissionEmailResult?.warning || "Intake saved to server database. Live SMTP credentials are not yet configured in AI Studio."}
+                      </p>
+                      <div className="pt-2 border-t border-amber-200 text-[11px] text-amber-900 leading-normal">
+                        <strong>📌 Why wasn't the live email received?</strong><br />
+                        Outbound SMTP email servers require authentication. To route emails directly into your inbox at <strong className="text-teal-800">admin@synergycarelink.com</strong>, configure <code className="bg-amber-200/60 px-1 py-0.5 rounded font-mono font-bold">SMTP_USER</code> and <code className="bg-amber-200/60 px-1 py-0.5 rounded font-mono font-bold">SMTP_PASS</code> in your project's <strong>Settings / Environment Variables</strong>.
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex justify-center gap-3 pt-2">
                   <button
                     type="button"
                     onClick={handleResetForm}
