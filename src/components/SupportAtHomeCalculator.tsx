@@ -788,7 +788,7 @@ export default function SupportAtHomeCalculator({ onPreFillReferral, onNavigate 
           <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl my-8 border border-slate-200">
             <div className="flex justify-between items-start border-b border-slate-200 pb-4">
               <div>
-                <span className="text-teal-700 font-bold text-xs uppercase tracking-widest">Synergy Care Link Report</span>
+                <span className="text-teal-700 font-bold text-xs uppercase tracking-widest">Synergy CareLink Report</span>
                 <h3 className="text-xl font-display font-bold text-[#0b2240] mt-1">Support at Home Budget Breakdown</h3>
                 <p className="text-xs text-slate-500">Official estimate for care coordinators & family advocates.</p>
               </div>

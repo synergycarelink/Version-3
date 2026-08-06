@@ -205,7 +205,7 @@ app.post("/api/consultations", async (req, res) => {
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
         <div style="background-color: #0b2240; padding: 24px; text-align: center; color: white;">
           <h2 style="margin: 0; font-size: 20px; font-weight: bold;">New Free Consultation Request</h2>
-          <p style="margin: 4px 0 0 0; font-size: 13px; color: #f59e0b; font-weight: bold;">Synergy Care Link Care Consultation</p>
+          <p style="margin: 4px 0 0 0; font-size: 13px; color: #f59e0b; font-weight: bold;">Synergy CareLink Care Consultation</p>
         </div>
         <div style="padding: 24px; background-color: #f8fafc;">
           <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
@@ -237,7 +237,7 @@ app.post("/api/consultations", async (req, res) => {
         });
 
         await transporter.sendMail({
-          from: `"Synergy Care Link" <${smtpUser}>`,
+          from: `"Synergy CareLink" <${smtpUser}>`,
           to: "admin@synergycarelink.com",
           subject: `📅 [Free Consultation Booking] - ${bookingWithId.fullName} (${bookingWithId.topic})`,
           html: emailHtml,
@@ -427,7 +427,7 @@ app.post("/api/send-email", async (req, res) => {
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
         <div style="background-color: #0f766e; padding: 24px; text-align: center; color: white;">
           <h2 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">New Client Referral Intake</h2>
-          <p style="margin: 4px 0 0 0; font-size: 14px; color: #ccfbf1;">Synergy Care Link Portal Submission • <strong style="color: #f59e0b;">${typeDisplay}</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 14px; color: #ccfbf1;">Synergy CareLink Portal Submission • <strong style="color: #f59e0b;">${typeDisplay}</strong></p>
         </div>
         <div style="padding: 24px; background-color: #f8fafc;">
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
@@ -496,7 +496,7 @@ app.post("/api/send-email", async (req, res) => {
           </div>
         </div>
         <div style="background-color: #f1f5f9; padding: 16px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0;">
-          This is an automated intake notification powered by Synergy Care Link Portal AI.
+          This is an automated intake notification powered by Synergy CareLink Portal AI.
         </div>
       </div>
     `;
@@ -522,7 +522,7 @@ app.post("/api/send-email", async (req, res) => {
         });
 
         await transporter.sendMail({
-          from: `"Synergy Care Link Portal" <${smtpUser}>`,
+          from: `"Synergy CareLink Portal" <${smtpUser}>`,
           to: "admin@synergycarelink.com",
           subject: `🚨 [New Referral Intake] - ${participantName}`,
           html: emailHtml,
@@ -569,7 +569,7 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Messages array is required." });
     }
 
-    const systemInstruction = `You are 'Synergy Care Link AI', a friendly, compassionate, and highly supportive NDIS Intake Assistant representing Synergy Care Link (a Registered NDIS Provider).
+    const systemInstruction = `You are 'Synergy CareLink AI', a friendly, compassionate, and highly supportive NDIS Intake Assistant representing Synergy CareLink (a Registered NDIS Provider).
 Your goal is to guide the user in a warm, friendly conversation, answer basic NDIS or care questions, and collect their intake/referral details.
 
 Please collect the following information step-by-step (do NOT ask for all at once to prevent user overload):

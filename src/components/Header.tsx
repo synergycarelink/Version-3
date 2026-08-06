@@ -208,7 +208,7 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
           </div>
           <div className="flex flex-col">
             <span className="text-[#0b2240] font-display text-lg sm:text-xl font-bold tracking-tight leading-none group-hover:text-teal-700 transition-colors whitespace-nowrap">
-              Synergy Care Link
+              Synergy CareLink
             </span>
             <span className="text-slate-500 text-[11px] font-semibold tracking-wide flex items-center gap-1 mt-1">
               NDIS & Support at Home Service Provider

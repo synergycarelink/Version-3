@@ -289,7 +289,7 @@ export default function NDISCalculator({ onPreFillReferral, onNavigate }: NDISCa
                 <ArrowRight size={13} />
               </button>
               <p className="text-[10px] text-center text-slate-400">
-                Calculations are approximations for planning. Synergy Care Link assists with final service configurations.
+                Calculations are approximations for planning. Synergy CareLink assists with final service configurations.
               </p>
             </div>
           </div>

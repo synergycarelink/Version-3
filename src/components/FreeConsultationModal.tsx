@@ -291,7 +291,7 @@ export default function FreeConsultationModal({ isOpen, onClose, defaultTopic }:
                 Your Free Consultation is Confirmed!
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
-                Thank you, <strong>{bookingConfirmed.fullName}</strong>. A Senior Care Advisor from Synergy Care Link will reach out on <strong>{bookingConfirmed.preferredDate || 'your scheduled date'}</strong> during the <strong>{bookingConfirmed.preferredTime}</strong> window.
+                Thank you, <strong>{bookingConfirmed.fullName}</strong>. A Senior Care Advisor from Synergy CareLink will reach out on <strong>{bookingConfirmed.preferredDate || 'your scheduled date'}</strong> during the <strong>{bookingConfirmed.preferredTime}</strong> window.
               </p>
             </div>
 

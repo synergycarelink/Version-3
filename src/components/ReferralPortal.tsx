@@ -728,7 +728,7 @@ export default function ReferralPortal({
                 {/* Submit Panel */}
                 <div className="pt-4 flex items-center justify-between gap-4 border-t border-slate-100">
                   <p className="text-[11px] text-slate-400 max-w-md leading-relaxed">
-                    By submitting, you consent to Synergy Care Link contacting you regarding this client intake. We process all personal medical data in alignment with Australian privacy guidelines.
+                    By submitting, you consent to Synergy CareLink contacting you regarding this client intake. We process all personal medical data in alignment with Australian privacy guidelines.
                   </p>
                   <button
                     type="submit"
@@ -760,7 +760,7 @@ export default function ReferralPortal({
                     Referral Intake Logged Successfully!
                   </h3>
                   <p className="text-sm text-slate-600 mt-2 max-w-lg mx-auto leading-relaxed">
-                    Thank you for contacting Synergy Care Link. Your client intake details for <strong className="text-teal-800 font-bold">{participantName}</strong> have been recorded in our intake database.
+                    Thank you for contacting Synergy CareLink. Your client intake details for <strong className="text-teal-800 font-bold">{participantName}</strong> have been recorded in our intake database.
                   </p>
                 </div>
 
@@ -828,7 +828,7 @@ export default function ReferralPortal({
               </div>
               <h4 className="text-lg font-bold text-slate-800">Secure Staff & Provider Access</h4>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Referral records contain confidential health data. Please login to Synergy Care Link Database Manager.
+                Referral records contain confidential health data. Please login to Synergy CareLink Database Manager.
               </p>
             </div>
 

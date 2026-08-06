@@ -16,7 +16,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               <HeartHandshake size={20} />
             </div>
             <span className="text-white font-display text-lg font-bold tracking-tight whitespace-nowrap">
-              Synergy Care Link
+              Synergy CareLink
             </span>
           </div>
           <p className="text-xs text-slate-400 leading-relaxed">
@@ -133,14 +133,14 @@ export default function Footer({ onNavigate }: FooterProps) {
         <div className="bg-slate-950/40 p-5 rounded-lg border border-slate-800 text-center max-w-4xl mx-auto space-y-2">
           <p className="text-xs text-amber-500/90 font-semibold tracking-wide uppercase">Acknowledgement of Country</p>
           <p className="text-[11px] sm:text-xs text-slate-400 leading-relaxed italic">
-            "In the spirit of reconciliation, Synergy Care Link acknowledges the Traditional Custodians of country throughout Australia and their connections to land, sea and community. We pay our respect to their elders past and present and extend that respect to all Aboriginal and Torres Strait Islander peoples today."
+            "In the spirit of reconciliation, Synergy CareLink acknowledges the Traditional Custodians of country throughout Australia and their connections to land, sea and community. We pay our respect to their elders past and present and extend that respect to all Aboriginal and Torres Strait Islander peoples today."
           </p>
         </div>
       </div>
 
       {/* Copyright Bar */}
       <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-        <p>© 2026 Synergy Care Link. All Rights Reserved. NSW Registered Provider.</p>
+        <p>© 2026 Synergy CareLink. All Rights Reserved. NSW Registered Provider.</p>
         <div className="flex gap-4">
           <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-slate-300">Privacy Policy</a>
           <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-slate-300">Feedback & Complaints</a>

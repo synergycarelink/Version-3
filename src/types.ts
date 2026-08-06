@@ -8,6 +8,7 @@ export interface NDISService {
   features: string[];
   pricingGuide: string;
   programType?: 'ndis' | 'support_at_home' | 'both';
+  imageUrl?: string;
 }
 
 export interface ReferralSubmission {

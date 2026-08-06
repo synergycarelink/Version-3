@@ -8,6 +8,9 @@ import FreeConsultationModal from './components/FreeConsultationModal';
 import FreeConsultationBanner from './components/FreeConsultationBanner';
 import { SERVICES_DATA } from './data/services';
 import { AccessibilitySettings, NDISService } from './types';
+import heroCaringImage from './assets/images/hero_caring_support_1786006266477.jpg';
+import communityHubImage from './assets/images/community_hub_group_1786006280169.jpg';
+import inHomeCareImage from './assets/images/in_home_care_support_1786006291768.jpg';
 import { 
   HeartHandshake, 
   Smile, 
@@ -137,7 +140,7 @@ export default function App() {
     {
       name: "Elizabeth S.",
       role: "Parent of Client",
-      quote: "The team at Synergy Care Link doesn't just manage cases; they genuinely care. Their Support Coordinator took all the stress out of our plan review and got our social programs fully funded.",
+      quote: "The team at Synergy CareLink doesn't just manage cases; they genuinely care. Their Support Coordinator took all the stress out of our plan review and got our social programs fully funded.",
       tag: "Support Coordination"
     },
     {
@@ -191,7 +194,7 @@ export default function App() {
               </div>
 
               <h1 
-                onClick={() => speakText("Synergy Care Link. Connecting capabilities, enriching lives. Your trusted NDIS care partner.")}
+                onClick={() => speakText("Synergy CareLink. Connecting capabilities, enriching lives. Your trusted NDIS care partner.")}
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-display font-bold tracking-tight text-white leading-tight cursor-help hover:text-amber-300 transition-colors"
                 title="Click to read aloud"
               >
@@ -200,7 +203,7 @@ export default function App() {
               </h1>
 
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
-                Synergy Care Link is a registered NDIS provider delivering highly personalized supported independent living, community hubs, in-home support, and coordinator advocacy. We work with participants to unlock their plans and live with choice and control.
+                Synergy CareLink is a registered NDIS provider delivering highly personalized supported independent living, community hubs, in-home support, and coordinator advocacy. We work with participants to unlock their plans and live with choice and control.
               </p>
 
               {/* Action Cards & Buttons */}
@@ -237,39 +240,69 @@ export default function App() {
               </div>
             </div>
 
-            {/* Hero Right Interactive Card (Quick Service Selector) */}
-            <div className="lg:col-span-5 bg-white/5 border border-white/10 p-6 sm:p-8 rounded-2xl shadow-2xl backdrop-blur-md space-y-6">
-              <div className="space-y-1">
-                <h3 className="text-white font-display font-bold text-lg">Looking for immediate support?</h3>
-                <p className="text-xs text-slate-400">Tell us what you need, and we will guide you to booking.</p>
-              </div>
-
-              <div className="space-y-4">
-                {[
-                  { title: "Supported Independent Living (SIL)", desc: "Shared high-care housing options", target: "sil" },
-                  { title: "Community Hub Day Activities", desc: "Workshops, cooking, and social groups", target: "community-hubs" },
-                  { title: "NDIS Plan Budget Coordination", desc: "Managing agreements and therapy", target: "support-coordination" }
-                ].map((item, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      handlePreFillReferral([item.target], `Immediate enquiry from Hero Section Quick Selection cards for: ${item.title}`);
-                      handleNavigate('referrals');
-                    }}
-                    className="w-full text-left bg-white/5 hover:bg-teal-700/30 p-3 rounded-xl border border-white/10 hover:border-teal-500/40 transition-all cursor-pointer group flex justify-between items-center"
-                  >
-                    <div>
-                      <p className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">{item.title}</p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">{item.desc}</p>
+            {/* Hero Right Interactive Card & Caring Image Banner */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Authentic Care Image Frame */}
+              <div className="relative group rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10 bg-slate-800">
+                <img 
+                  src={heroCaringImage} 
+                  alt="Compassionate Synergy CareLink support worker smiling warmly with NDIS participant" 
+                  referrerPolicy="no-referrer" 
+                  className="w-full h-56 sm:h-64 object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent"></div>
+                
+                {/* Overlaid Trust Badge */}
+                <div className="absolute bottom-3 left-3 right-3 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-xl flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300">
+                      <HeartHandshake size={16} />
                     </div>
-                    <ChevronRight size={16} className="text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
-                  </button>
-                ))}
+                    <div>
+                      <p className="text-xs font-bold text-white">Authentic & Caring Support</p>
+                      <p className="text-[10px] text-teal-300">Matching languages, culture & goals</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] bg-amber-400 text-slate-950 font-bold px-2 py-1 rounded-full uppercase tracking-wider">
+                    Sydney Wide
+                  </span>
+                </div>
               </div>
 
-              <p className="text-[11px] text-center text-slate-500 italic">
-                Need to calculate hours? <button onClick={() => handleNavigate('calculator')} className="text-teal-400 underline font-semibold">Try the NDIS calculator</button>
-              </p>
+              {/* Quick Service Selector Box */}
+              <div className="bg-white/5 border border-white/10 p-5 rounded-2xl shadow-xl backdrop-blur-md space-y-4">
+                <div className="space-y-0.5">
+                  <h3 className="text-white font-display font-bold text-base">Looking for immediate support?</h3>
+                  <p className="text-[11px] text-slate-400">Select a service to request fast consultation & booking.</p>
+                </div>
+
+                <div className="space-y-2.5">
+                  {[
+                    { title: "Supported Independent Living (SIL)", desc: "Shared high-care housing options", target: "sil" },
+                    { title: "Community Hub Day Activities", desc: "Workshops, cooking, and social groups", target: "community-hubs" },
+                    { title: "NDIS Plan Budget Coordination", desc: "Managing agreements and therapy", target: "support-coordination" }
+                  ].map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        handlePreFillReferral([item.target], `Immediate enquiry from Hero Section Quick Selection cards for: ${item.title}`);
+                        handleNavigate('referrals');
+                      }}
+                      className="w-full text-left bg-white/5 hover:bg-teal-700/40 p-2.5 rounded-xl border border-white/10 hover:border-teal-500/40 transition-all cursor-pointer group flex justify-between items-center"
+                    >
+                      <div>
+                        <p className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">{item.title}</p>
+                        <p className="text-[10px] text-slate-400 mt-0.5">{item.desc}</p>
+                      </div>
+                      <ChevronRight size={15} className="text-slate-400 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                    </button>
+                  ))}
+                </div>
+
+                <p className="text-[11px] text-center text-slate-500 italic">
+                  Need to calculate hours? <button onClick={() => handleNavigate('calculator')} className="text-teal-400 underline font-semibold cursor-pointer">Try the NDIS calculator</button>
+                </p>
+              </div>
             </div>
 
           </div>
@@ -371,12 +404,25 @@ export default function App() {
               }).map((service) => (
                 <div
                   key={service.id}
-                  className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group overflow-hidden"
                 >
                   <div className="space-y-4">
+                    {/* Top Image Preview if available */}
+                    {service.imageUrl && (
+                      <div className="relative h-44 -mx-6 -mt-6 mb-4 overflow-hidden bg-slate-100">
+                        <img 
+                          src={service.imageUrl} 
+                          alt={service.title} 
+                          referrerPolicy="no-referrer" 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+                      </div>
+                    )}
+
                     {/* Icon, Program Badge & Audio Header */}
                     <div className="flex justify-between items-start gap-2">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-colors duration-300 ${
+                      <div className={`w-11 h-11 rounded-xl flex items-center justify-center border transition-colors duration-300 ${
                         service.programType === 'support_at_home'
                           ? 'bg-amber-50 border-amber-200 group-hover:bg-amber-600'
                           : service.programType === 'both'
@@ -384,7 +430,7 @@ export default function App() {
                           : 'bg-teal-50 border-teal-100 group-hover:bg-teal-600'
                       }`}>
                         <div className="group-hover:text-white transition-colors">
-                          {getServiceIcon(service.iconName, 22)}
+                          {getServiceIcon(service.iconName, 20)}
                         </div>
                       </div>
 
@@ -468,8 +514,28 @@ export default function App() {
         {/* SERVICE EXPANDED DETAIL MODAL */}
         {selectedServiceDetail && (
           <div className="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-5 animate-scale-up">
+            <div className="bg-white rounded-2xl border border-slate-300 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-5 animate-scale-up overflow-hidden">
               
+              {/* Modal Top Banner Image if available */}
+              {selectedServiceDetail.imageUrl && (
+                <div className="relative h-48 sm:h-56 -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-4 overflow-hidden bg-slate-100">
+                  <img 
+                    src={selectedServiceDetail.imageUrl} 
+                    alt={selectedServiceDetail.title} 
+                    referrerPolicy="no-referrer" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedServiceDetail(null)}
+                    className="absolute top-4 right-4 bg-slate-950/60 text-white hover:bg-slate-900 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors border border-white/20"
+                  >
+                    ✕
+                  </button>
+                </div>
+              )}
+
               <div className="flex justify-between items-start border-b border-slate-200 pb-4">
                 <div className="space-y-1">
                   <span className="text-[10px] font-bold bg-teal-100 text-teal-800 px-2 py-0.5 rounded border border-teal-200">
@@ -479,13 +545,15 @@ export default function App() {
                     {selectedServiceDetail.title}
                   </h3>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedServiceDetail(null)}
-                  className="bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors"
-                >
-                  ✕
-                </button>
+                {!selectedServiceDetail.imageUrl && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedServiceDetail(null)}
+                    className="bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
 
               <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -579,7 +647,7 @@ export default function App() {
                   Designed Around Your Culture, Comfort, and Independence
                 </h2>
                 <p className="text-slate-500 text-sm leading-relaxed">
-                  Synergy Care Link was founded with the belief that care is most powerful when customized. We recruit local support workers who share our client’s languages, cultural values, hobbies, and dietary styles to ensure true companionship.
+                  Synergy CareLink was founded with the belief that care is most powerful when customized. We recruit local support workers who share our client’s languages, cultural values, hobbies, and dietary styles to ensure true companionship.
                 </p>
 
                 <div className="space-y-4 pt-2">
@@ -601,12 +669,30 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Graphic/Values Right */}
-              <div className="lg:col-span-7 bg-[#0b2240] rounded-2xl p-8 sm:p-10 text-white relative overflow-hidden shadow-xl">
+              {/* Graphic/Values Right with authentic in-home care image banner */}
+              <div className="lg:col-span-7 bg-[#0b2240] rounded-2xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl space-y-6">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-teal-400 via-emerald-500"></div>
                 
+                {/* Authentic In-Home Support Banner */}
+                <div className="relative h-44 sm:h-52 -mx-6 sm:-mx-10 -mt-6 sm:-mt-10 mb-2 overflow-hidden rounded-t-2xl group">
+                  <img 
+                    src={inHomeCareImage} 
+                    alt="Attentive support worker preparing a fresh meal with participant in home" 
+                    referrerPolicy="no-referrer" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b2240] via-[#0b2240]/40 to-transparent"></div>
+                  
+                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
+                    <p className="text-xs font-bold text-teal-300">Personalized In-Home Companionship</p>
+                    <span className="text-[10px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full uppercase">
+                      Respect & Dignity
+                    </span>
+                  </div>
+                </div>
+
                 <h3 className="text-xl font-display font-bold text-amber-400">Our Pillars of NDIS Care Quality</h3>
-                <p className="text-xs text-slate-300 mt-2">Every team member operates strictly under our high quality assurance pillars:</p>
+                <p className="text-xs text-slate-300">Every team member operates strictly under our high quality assurance pillars:</p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
                   <div className="space-y-2">
@@ -717,7 +803,7 @@ export default function App() {
         </section>
 
 
-        {/* 9. ABOUT SYNERGY CARE LINK SECTION */}
+        {/* 9. ABOUT SYNERGY CARELINK SECTION */}
         <section 
           ref={sectionRefs.about}
           id="about"
@@ -732,17 +818,17 @@ export default function App() {
                   About Us
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#0b2240] tracking-tight">
-                  About Synergy Care Link
+                  About Synergy CareLink
                 </h2>
                 <div className="text-slate-500 text-xs sm:text-sm space-y-4 leading-relaxed">
                   <p>
-                    Synergy Care Link is a fully registered NDIS service provider operating across the Greater Sydney region with a deep focus on Parramatta, Blacktown, and South-Western Sydney. We were established by certified human services professionals who recognized the need for a more empathetic, highly adaptive approach to care coordination.
+                    Synergy CareLink is a fully registered NDIS service provider operating across the Greater Sydney region with a deep focus on Parramatta, Blacktown, and South-Western Sydney. We were established by certified human services professionals who recognized the need for a more empathetic, highly adaptive approach to care coordination.
                   </p>
                   <p>
                     The word <strong>Synergy</strong> is our core blueprint: we believe the best independent care outcomes are achieved when the participant, their medical team, their family advocates, and our highly skilled support workers operate in perfect, transparent alignment.
                   </p>
                   <p>
-                    Whether you are coordinating 24/7 Supported Independent Living (SIL), planning weekly group activities at our modern Hubs, or navigating a complex NDIS annual plan review, Synergy Care Link stands by your side with professional advocacy, safety compliance, and deep warmth.
+                    Whether you are coordinating 24/7 Supported Independent Living (SIL), planning weekly group activities at our modern Hubs, or navigating a complex NDIS annual plan review, Synergy CareLink stands by your side with professional advocacy, safety compliance, and deep warmth.
                   </p>
                 </div>
 
@@ -762,8 +848,30 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right Column compliance & contact card */}
-              <div className="lg:col-span-6 bg-slate-50 rounded-2xl border border-slate-200 p-8 space-y-6">
+              {/* Right Column compliance & contact card with authentic community hub image */}
+              <div className="lg:col-span-6 bg-slate-50 rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-6 overflow-hidden shadow-sm">
+                
+                {/* Authentic Community Hub Photo Header */}
+                <div className="relative h-52 sm:h-60 -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-2 overflow-hidden bg-slate-800 group">
+                  <img 
+                    src={communityHubImage} 
+                    alt="Happy participants enjoying art and cooking activities at Synergy CareLink Community Hub" 
+                    referrerPolicy="no-referrer" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                  
+                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
+                    <div>
+                      <p className="text-xs font-bold text-amber-300">Community Hubs & Day Programs</p>
+                      <p className="text-[10px] text-slate-200">Building skills, friendships & creative expression</p>
+                    </div>
+                    <span className="text-[10px] bg-teal-600/90 text-white font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-teal-400/40">
+                      Parramatta & Sydney
+                    </span>
+                  </div>
+                </div>
+
                 <h3 className="text-lg font-display font-bold text-[#0b2240] flex items-center gap-1.5">
                   <HeartHandshake className="text-teal-700" size={20} />
                   Synergy Service Quality Commitment

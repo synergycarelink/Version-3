@@ -10,6 +10,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Core Supports - Assistance with Daily Life',
     iconName: 'Home',
     programType: 'ndis',
+    imageUrl: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=800',
     features: [
       'Fully furnished, high-accessibility homes',
       '24/7 dedicated and trained support staff on site',
@@ -23,10 +24,11 @@ export const SERVICES_DATA: NDISService[] = [
     id: 'community-hubs',
     title: 'Community Access & Day Hubs',
     shortDescription: 'Exciting, group-based hubs and outings to learn skills, make lifelong friends, and connect.',
-    fullDescription: 'Inspired by modern Community Hub models, Synergy Care Link provides daily group-based programs and social outings that promote skill-building and friendship. From cooking classes and arts & crafts to technology workshops, beach days, and sports, our hubs are inclusive, exciting environments where clients can shine.',
+    fullDescription: 'Inspired by modern Community Hub models, Synergy CareLink provides daily group-based programs and social outings that promote skill-building and friendship. From cooking classes and arts & crafts to technology workshops, beach days, and sports, our hubs are inclusive, exciting environments where clients can shine.',
     ndisCategory: 'Core Supports - Social & Community Participation',
     iconName: 'Users',
     programType: 'ndis',
+    imageUrl: '/src/assets/images/community_hub_group_1786006280169.jpg',
     features: [
       'Tailored workshops (Cooking, Art, Music, Woodwork)',
       'Digital literacy and technology programs',
@@ -44,6 +46,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Capacity Building - Support Coordination',
     iconName: 'Compass',
     programType: 'ndis',
+    imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800',
     features: [
       'Dedicated NDIS experts matching you with ideal services',
       'Assistance setting up service agreements and portals',
@@ -61,6 +64,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Core Supports - Assistance with Daily Life',
     iconName: 'HeartHandshake',
     programType: 'both',
+    imageUrl: '/src/assets/images/in_home_care_support_1786006291768.jpg',
     features: [
       'Personal care (showering, dressing, grooming)',
       'Domestic assistance (cleaning, laundry, decluttering)',
@@ -78,6 +82,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Capital Supports - Specialist Disability Accommodation',
     iconName: 'Key',
     programType: 'ndis',
+    imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
     features: [
       'High Physical Support standard design',
       'Smart home automation (doors, lights, climate control)',
@@ -91,10 +96,11 @@ export const SERVICES_DATA: NDISService[] = [
     id: 'rec-social',
     title: 'Social & Recreational Programs',
     shortDescription: 'Weekend activities, holiday retreats, and adventure sports designed for active fun.',
-    fullDescription: 'Synergy Care Link believes that recreation is key to wellness. We organize regular weekend socials, dynamic interest-based clubs (such as bowling, cinema, and dining), and hosted holiday retreats where participants can travel to new places, camp, and experience adventures with trained carer support.',
+    fullDescription: 'Synergy CareLink believes that recreation is key to wellness. We organize regular weekend socials, dynamic interest-based clubs (such as bowling, cinema, and dining), and hosted holiday retreats where participants can travel to new places, camp, and experience adventures with trained carer support.',
     ndisCategory: 'Core Supports - Social & Community Participation',
     iconName: 'Sparkles',
     programType: 'ndis',
+    imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800',
     features: [
       'Supported weekend social dinners and club activities',
       'Supported travel, campouts, and holiday retreats',
@@ -114,6 +120,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Support at Home - Clinical & Health Care',
     iconName: 'Stethoscope',
     programType: 'support_at_home',
+    imageUrl: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=800',
     features: [
       'Registered Nurse (RN) clinical visits & health assessments',
       'Wound management & dressing changes',
@@ -131,6 +138,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Support at Home - Independence & Personal Care',
     iconName: 'HeartHandshake',
     programType: 'support_at_home',
+    imageUrl: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=800',
     features: [
       'Assistance with showering, bathing & personal hygiene',
       'Dressing, grooming & personal care support',
@@ -148,6 +156,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Support at Home - Everyday Living',
     iconName: 'Home',
     programType: 'support_at_home',
+    imageUrl: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=800',
     features: [
       'Regular housekeeping, vacuuming & dusting',
       'Laundry, ironing & linen changes',
@@ -165,6 +174,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Support at Home - Restoration & Health',
     iconName: 'Activity',
     programType: 'support_at_home',
+    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800',
     features: [
       'In-home Physiotherapy & rehabilitation exercises',
       'Occupational Therapy home safety assessments',
@@ -182,6 +192,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Support at Home - Community & Outings',
     iconName: 'Car',
     programType: 'support_at_home',
+    imageUrl: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800',
     features: [
       'Assisted transport to GP & specialist appointments',
       'Accompanied grocery shopping & errand runs',
@@ -199,6 +210,7 @@ export const SERVICES_DATA: NDISService[] = [
     ndisCategory: 'Support at Home - Home Safety',
     iconName: 'Wrench',
     programType: 'support_at_home',
+    imageUrl: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&q=80&w=800',
     features: [
       'Lawn mowing, weeding & garden maintenance',
       'Minor home repairs & light bulb replacements',
