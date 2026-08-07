@@ -64,9 +64,10 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
   };
 
   const navItems = [
-    { label: 'Services', id: 'services' },
-    { label: 'Support at Home Calculator', id: 'support-at-home' },
-    { label: 'NDIS Plan Calculator', id: 'calculator' },
+    { label: 'Home', id: 'home' },
+    { label: 'Support at Home', id: 'support-at-home' },
+    { label: 'NDIS Services & Budget', id: 'ndis' },
+    { label: 'Client Referrals', id: 'referrals' },
     { label: 'About Us', id: 'about' },
   ];
 
@@ -85,10 +86,10 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
           </a>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button 
             onClick={() => setShowAccessPanel(!showAccessPanel)}
-            className="flex items-center gap-1 text-xs hover:text-amber-400 font-medium transition-colors bg-white/10 px-2.5 py-1 rounded border border-white/20"
+            className="flex items-center gap-1 text-xs hover:text-amber-400 font-medium transition-colors bg-white/10 px-2.5 py-1 rounded border border-white/20 cursor-pointer"
             aria-label="Accessibility Options"
           >
             <Accessibility size={13} className="text-amber-400" />

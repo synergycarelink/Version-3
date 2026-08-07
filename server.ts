@@ -154,7 +154,7 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// File storage helper for referrals
+// File storage helper for referrals and consultations
 const REFERRALS_FILE = path.join(process.cwd(), "data-referrals.json");
 const CONSULTATIONS_FILE = path.join(process.cwd(), "data-consultations.json");
 

@@ -1,0 +1,13 @@
+[
+  {
+    "fullName": "Jane Doe",
+    "phone": "0400000000",
+    "email": "jane@example.com",
+    "preferredDate": "2026-08-10",
+    "preferredTime": "Morning (9am - 12pm)",
+    "topic": "NDIS Plan Review",
+    "notes": "Testing booking",
+    "id": "CNS-516773",
+    "createdAt": "2026-08-06T23:01:25.603Z"
+  }
+]

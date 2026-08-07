@@ -31,16 +31,15 @@ export default function Footer({ onNavigate }: FooterProps) {
         {/* Quick Links Column */}
         <div>
           <h3 className="text-white font-display text-sm font-bold tracking-wider uppercase mb-4 pb-2 border-b border-slate-700">
-            Our Services
+            Quick Navigation
           </h3>
           <ul className="space-y-2 text-xs">
             {[
-              { label: 'Supported Independent Living (SIL)', id: 'services' },
-              { label: 'Community & Day Hubs', id: 'services' },
-              { label: 'Support Coordination', id: 'services' },
-              { label: 'In-Home Care Support', id: 'services' },
-              { label: 'Specialist Accommodations (SDA)', id: 'services' },
-              { label: 'Social & Recreational Programs', id: 'services' }
+              { label: 'Home Overview', id: 'home' },
+              { label: 'Support at Home & Budget', id: 'support-at-home' },
+              { label: 'NDIS Services & Plan Estimator', id: 'ndis' },
+              { label: 'Client Referral Portal', id: 'referrals' },
+              { label: 'About Synergy CareLink', id: 'about' }
             ].map((link, index) => (
               <li key={index}>
                 <button
@@ -103,17 +102,17 @@ export default function Footer({ onNavigate }: FooterProps) {
             <li>
               <button 
                 onClick={() => onNavigate('support-at-home')}
-                className="hover:text-amber-400 text-teal-300 font-semibold transition-colors flex items-center gap-1.5 text-left cursor-pointer"
+                className="hover:text-amber-400 text-amber-300 font-semibold transition-colors flex items-center gap-1.5 text-left cursor-pointer"
               >
                 Support at Home Calculator
               </button>
             </li>
             <li>
               <button 
-                onClick={() => onNavigate('calculator')}
-                className="hover:text-amber-400 transition-colors flex items-center gap-1.5 text-left cursor-pointer"
+                onClick={() => onNavigate('ndis')}
+                className="hover:text-amber-400 text-teal-300 font-semibold transition-colors flex items-center gap-1.5 text-left cursor-pointer"
               >
-                Plan Budget Calculator
+                NDIS Plan Budget Estimator
               </button>
             </li>
           </ul>

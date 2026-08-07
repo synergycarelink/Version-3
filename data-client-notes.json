@@ -1,0 +1,45 @@
+[
+  {
+    "clientName": "Liam O Connor",
+    "noteText": "Participated in afternoon physical therapy session",
+    "shiftDate": "2026-08-06",
+    "authorName": "Sarah Jenkins",
+    "authorRole": "RN",
+    "id": "NOTE-5097",
+    "createdAt": "2026-08-06T23:31:25.876Z"
+  },
+  {
+    "id": "NOTE-1001",
+    "clientId": "CLI-101",
+    "clientName": "Marcus Vance",
+    "ndisNumber": "430 921 882",
+    "programType": "NDIS SIL",
+    "shiftDate": "2026-08-05",
+    "shiftType": "Morning Shift (07:00 - 15:00)",
+    "category": "Daily Progress Note",
+    "mood": "Happy & Engaged",
+    "goalTag": "Goal 1: Meal Preparation & Independent Living",
+    "noteText": "Marcus actively participated in preparing morning breakfast. Followed visual recipe card for poached eggs on toast with minimal verbal prompts. Showed great enthusiasm and expressed pride in completing the meal independently.",
+    "authorName": "Sarah Jenkins, RN",
+    "authorRole": "Registered Nurse / Care Lead",
+    "flaggedForReview": false,
+    "createdAt": "2026-08-05T14:30:00.000Z"
+  },
+  {
+    "id": "NOTE-1002",
+    "clientId": "CLI-102",
+    "clientName": "Amina Al-Mansoor",
+    "ndisNumber": "389 110 452",
+    "programType": "Support at Home",
+    "shiftDate": "2026-08-04",
+    "shiftType": "Community Outing",
+    "category": "Community Outing & Hub Participation Note",
+    "mood": "Calm & Social",
+    "goalTag": "Goal 2: Community Participation & Social Connection",
+    "noteText": "Accompanied Amina to Parramatta Community Hub pottery workshop. Engaged with group members in Arabic and English. Maintained steady fine motor skills throughout the 2-hour session and purchased craft supplies for home.",
+    "authorName": "David Chen",
+    "authorRole": "Disability Support Worker",
+    "flaggedForReview": false,
+    "createdAt": "2026-08-04T16:15:00.000Z"
+  }
+]
