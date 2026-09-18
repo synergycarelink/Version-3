@@ -319,7 +319,7 @@ app.get("/api/smtp-status", async (req, res) => {
       if (connectionError?.includes("5.7.139") || connectionError?.includes("SmtpClientAuthentication")) {
         fixAdvice = "Microsoft 365 Tenant has Authenticated SMTP disabled for this user. Enable 'Authenticated SMTP' in M365 Admin Center -> Users -> Active Users -> Mail -> Manage email apps, OR switch to Gmail using a 16-character App Password (SMTP_HOST=smtp.gmail.com).";
       } else if (connectionError?.includes("535") || connectionError?.includes("BadCredentials")) {
-        fixAdvice = "SMTP authentication failed. Please double-check your username and password or App Password in AI Studio Settings.";
+        fixAdvice = "SMTP authentication failed. Please double-check your username and password or App Password in server environment configuration.";
       }
     }
   }
@@ -539,7 +539,7 @@ app.post("/api/send-email", async (req, res) => {
         return res.json({
           success: true,
           method: "smtp_error",
-          warning: `Referral saved to database, but SMTP delivery failed (${smtpErr.message || "Authentication error"}). Please verify SMTP_USER and SMTP_PASS in AI Studio Settings.`
+          warning: `Referral saved to database, but SMTP delivery failed (${smtpErr.message || "Authentication error"}). Please verify SMTP_USER and SMTP_PASS in server configuration.`
         });
       }
     } else {
@@ -552,7 +552,7 @@ app.post("/api/send-email", async (req, res) => {
       return res.json({
         success: true,
         method: "mock",
-        warning: "Referral logged safely in database! To send live email alerts to admin@synergycarelink.com, please add SMTP_USER and SMTP_PASS in AI Studio Settings."
+        warning: "Referral logged safely in database! To send live email alerts to admin@synergycarelink.com, configure SMTP_USER and SMTP_PASS in server environment variables."
       });
     }
   } catch (error: any) {

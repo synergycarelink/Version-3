@@ -6,6 +6,7 @@ import SupportAtHomeCalculator from './components/SupportAtHomeCalculator';
 import ReferralPortal from './components/ReferralPortal';
 import FreeConsultationModal from './components/FreeConsultationModal';
 import FreeConsultationBanner from './components/FreeConsultationBanner';
+import PerthOutletPage from './components/PerthOutletPage';
 import { SERVICES_DATA } from './data/services';
 import { AccessibilitySettings, NDISService } from './types';
 import heroCaringImage from './assets/images/hero_caring_support_1786006266477.jpg';
@@ -19,6 +20,7 @@ import {
   ChevronRight, 
   Sparkles, 
   Check, 
+  CheckCircle2, 
   Volume2, 
   Play, 
   BookOpen,
@@ -36,7 +38,8 @@ import {
   Stethoscope,
   Activity,
   Car,
-  Wrench
+  Wrench,
+  MapPin
 } from 'lucide-react';
 
 export default function App() {
@@ -77,6 +80,7 @@ export default function App() {
     'support-at-home': useRef<HTMLDivElement>(null),
     calculator: useRef<HTMLDivElement>(null),
     referrals: useRef<HTMLDivElement>(null),
+    perth: useRef<HTMLDivElement>(null),
     about: useRef<HTMLDivElement>(null),
   };
 
@@ -195,8 +199,8 @@ export default function App() {
                 {/* Hero Left Content */}
                 <div className="lg:col-span-7 space-y-6 sm:space-y-8">
                   <div className="inline-flex items-center gap-1.5 bg-teal-500/10 border border-teal-500/25 px-3 py-1.5 rounded-full text-xs text-teal-300 font-semibold tracking-wider uppercase animate-fade-in">
-                    <Sparkles size={13} className="text-amber-400" />
-                    Empowering Abilities, Building Synergy
+                    <CheckCircle2 size={13} className="text-emerald-400" />
+                    Registered NDIS Provider • Certified Care & Support at Home
                   </div>
 
                   <h1 
@@ -204,12 +208,12 @@ export default function App() {
                     className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-display font-bold tracking-tight text-white leading-tight cursor-help hover:text-amber-300 transition-colors"
                     title="Click to read aloud"
                   >
-                    Connecting <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-teal-400 to-amber-300">Capabilities</span>,<br />
-                    Enriching <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-teal-300">Lives</span>.
+                    Connecting Capabilities,<br />
+                    Enriching Lives.
                   </h1>
 
                   <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
-                    Synergy CareLink is a registered care provider delivering specialized Support at Home packages and NDIS supported independent living, community hubs, in-home support, and care advocacy across Greater Sydney.
+                    Synergy CareLink is a Registered NDIS Provider delivering specialized Supported Independent Living (SIL), Community Day Hubs, in-home care, and government-subsidized Support at Home packages across Greater Sydney.
                   </p>
 
                   {/* Action Buttons */}
@@ -232,8 +236,8 @@ export default function App() {
                   {/* Service metrics inline */}
                   <div className="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800 max-w-md">
                     <div>
-                      <p className="text-2xl font-bold text-teal-400 font-display">100%</p>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-wide">Registered Provider</p>
+                      <p className="text-2xl font-bold text-teal-400 font-display">Registered</p>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-wide">NDIS Provider</p>
                     </div>
                     <div>
                       <p className="text-2xl font-bold text-amber-400 font-display">24/7</p>
@@ -310,7 +314,7 @@ export default function App() {
             {/* PROGRAM NAVIGATION HUB CARDS SECTION */}
             <section className="py-16 bg-slate-100 border-b border-slate-200">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
+                <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
                   <span className="text-teal-700 font-display text-xs font-bold uppercase tracking-wider">
                     Information & Service Portals
                   </span>
@@ -320,6 +324,37 @@ export default function App() {
                   <p className="text-slate-600 text-sm">
                     Access dedicated program information, interactive budget allocators, and intake services.
                   </p>
+                </div>
+
+                {/* Perth Outlet Expansion Announcement Banner */}
+                <div className="mb-10 bg-gradient-to-r from-[#0b2240] via-slate-900 to-[#0b2240] rounded-2xl p-6 sm:p-7 text-white border-2 border-amber-400/40 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center shrink-0 shadow-md">
+                      <MapPin size={24} />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider bg-amber-400 text-slate-950 px-2 py-0.5 rounded">
+                          New Location Coming Soon
+                        </span>
+                        <h3 className="text-lg sm:text-xl font-display font-bold text-white">
+                          Perth Outlet & Community Care Hub
+                        </h3>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                        We are opening a brand-new outlet in Perth! Bringing Registered NDIS support, Support at Home aged care packages, and social programs to Western Australia. Priority waitlist now active.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3 shrink-0 w-full md:w-auto">
+                    <button
+                      onClick={() => handleNavigate('perth')}
+                      className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-5 py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto cursor-pointer"
+                    >
+                      <span>Explore Perth Outlet Page</span>
+                      <ChevronRight size={15} />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -436,7 +471,7 @@ export default function App() {
                     <Award size={20} />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-[#0b2240]">Certified NDIS Provider</p>
+                    <p className="text-xs font-bold text-[#0b2240]">Registered NDIS Provider</p>
                     <p className="text-[11px] text-slate-500">Fully compliant with the NDIS Quality and Safeguards Commission.</p>
                   </div>
                 </div>
@@ -528,32 +563,32 @@ export default function App() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
                       <div className="space-y-2">
-                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center font-bold text-xs">
-                          01
+                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center">
+                          <HeartHandshake size={16} />
                         </div>
                         <p className="text-xs font-bold text-white">Full Choice & Control</p>
                         <p className="text-[11px] text-slate-400">We work directly for you. You choose your housing, your roommates, your hubs, and worker matches.</p>
                       </div>
 
                       <div className="space-y-2">
-                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center font-bold text-xs">
-                          02
+                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center">
+                          <ShieldCheck size={16} />
                         </div>
                         <p className="text-xs font-bold text-white">Honest Advocacy</p>
-                        <p className="text-[11px] text-slate-400">Our Support Coordinators placement client welfare and budget optimization above all else.</p>
+                        <p className="text-[11px] text-slate-400">Our Support Coordinators place client welfare and budget optimization above all else.</p>
                       </div>
 
                       <div className="space-y-2">
-                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center font-bold text-xs">
-                          03
+                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center">
+                          <Award size={16} />
                         </div>
                         <p className="text-xs font-bold text-white">Continuous Training</p>
                         <p className="text-[11px] text-slate-400">All workers undergo regular specialized clinical modules including behaviour management and heavy hoist operations.</p>
                       </div>
 
                       <div className="space-y-2">
-                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center font-bold text-xs">
-                          04
+                        <div className="w-8 h-8 rounded-lg bg-teal-600/30 text-teal-300 border border-teal-500/20 flex items-center justify-center">
+                          <Users size={16} />
                         </div>
                         <p className="text-xs font-bold text-white">Community Uplift</p>
                         <p className="text-[11px] text-slate-400">We partner with local NSW colleges, sports clubs, and councils to build social pathways for our clients.</p>
@@ -622,6 +657,40 @@ export default function App() {
                 <p className="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
                   Understand Australia's Support at Home classification tiers (Tiers 1 to 8), calculate your personalized care budget, and estimate co-contributions for nursing, personal care, domestic support, and allied health.
                 </p>
+              </div>
+            </section>
+
+            {/* Over 65 Aged Care Advisory Notice */}
+            <section className="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-slate-950 py-7 px-4 sm:px-6 lg:px-8 border-b border-amber-400 shadow-md">
+              <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                <div className="space-y-2 max-w-4xl">
+                  <div className="inline-flex items-center gap-2 bg-slate-950/15 border border-slate-950/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-slate-900">
+                    <HeartHandshake size={14} className="text-slate-950" />
+                    Important Notice for Older Australians & Families
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-display font-bold text-slate-950 tracking-tight">
+                    Are You or a Loved One Over 65? You May Be Missing Out on Funded Aged Care Services
+                  </h2>
+                  <p className="text-slate-900 text-xs sm:text-sm leading-relaxed font-medium">
+                    Many Australians aged 65 and older (or 50+ for Aboriginal and Torres Strait Islander peoples) are entitled to substantial government subsidies for home cleaning, nursing, meal preparation, physiotherapy, and personal care without realizing they qualify. At Synergy CareLink, our dedicated coordinators are here to walk you through your My Aged Care options, explain the full range of services we can deliver, and help you unlock the funding support you deserve.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0 w-full lg:w-auto">
+                  <button
+                    onClick={() => handleOpenConsultation()}
+                    className="bg-[#0b2240] hover:bg-slate-900 text-white font-bold text-xs px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    Discuss Care Offerings (Free Consultation)
+                    <ChevronRight size={15} />
+                  </button>
+                  <button
+                    onClick={() => handleNavigate('referrals')}
+                    className="bg-white/90 hover:bg-white text-slate-900 font-bold text-xs px-6 py-3 rounded-xl border border-slate-900/10 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    Submit an Aged Care Enquiry
+                  </button>
+                </div>
               </div>
             </section>
 
@@ -809,9 +878,18 @@ export default function App() {
           </div>
         )}
 
+        {/* ========================================== */}
+        {/* PAGE 5: PERTH OUTLET (COMING SOON)         */}
+        {/* ========================================== */}
+        {activeSection === 'perth' && (
+          <PerthOutletPage 
+            onNavigate={handleNavigate}
+            onOpenConsultation={handleOpenConsultation}
+          />
+        )}
 
         {/* ========================================== */}
-        {/* PAGE 5: ABOUT US PAGE                     */}
+        {/* PAGE 6: ABOUT US PAGE                     */}
         {/* ========================================== */}
         {activeSection === 'about' && (
           <div className="animate-fade-in">
@@ -845,7 +923,7 @@ export default function App() {
                     </h2>
                     <div className="text-slate-600 text-xs sm:text-sm space-y-4 leading-relaxed">
                       <p>
-                        Synergy CareLink is a fully registered service provider operating across the Greater Sydney region with a deep focus on Parramatta, Blacktown, and South-Western Sydney. We were established by certified human services professionals who recognized the need for a more empathetic, highly adaptive approach to care coordination.
+                        Synergy CareLink is a Registered NDIS Provider operating across the Greater Sydney region with a deep focus on Parramatta, Blacktown, and South-Western Sydney. We were established by certified human services professionals who recognized the need for a more empathetic, highly adaptive approach to care coordination.
                       </p>
                       <p>
                         The word <strong>Synergy</strong> is our core blueprint: we believe the best independent care outcomes are achieved when the participant, their medical team, their family advocates, and our highly skilled support workers operate in perfect, transparent alignment.
@@ -857,8 +935,8 @@ export default function App() {
 
                     <div className="pt-4 flex flex-wrap gap-4">
                       <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center min-w-[140px] flex-1">
-                        <p className="text-2xl font-bold text-teal-700">100%</p>
-                        <p className="text-[10px] text-slate-500 uppercase tracking-wide font-medium mt-1">Registered Provider</p>
+                        <p className="text-2xl font-bold text-teal-700">Registered</p>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-wide font-medium mt-1">NDIS Provider</p>
                       </div>
                       <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center min-w-[140px] flex-1">
                         <p className="text-2xl font-bold text-[#0b2240]">Parramatta</p>

@@ -11,8 +11,7 @@ import {
   X, 
   HeartHandshake,
   CheckCircle2,
-  Calendar,
-  Sparkles
+  Calendar
 } from 'lucide-react';
 import { AccessibilitySettings } from '../types';
 
@@ -68,6 +67,7 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
     { label: 'Support at Home', id: 'support-at-home' },
     { label: 'NDIS Services & Budget', id: 'ndis' },
     { label: 'Client Referrals', id: 'referrals' },
+    { label: 'Perth Outlet', id: 'perth', badge: 'Coming Soon' },
     { label: 'About Us', id: 'about' },
   ];
 
@@ -75,15 +75,26 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
     <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm transition-colors duration-200">
       {/* Top bar with quick contact */}
       <div className="bg-[#0b2240] text-white text-xs py-2 px-4 sm:px-6 md:px-8 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <div className="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-emerald-400/30 shadow-xs">
+            <CheckCircle2 size={12} className="text-emerald-400" />
+            Registered NDIS Provider
+          </div>
           <a href="tel:1300363177" className="flex items-center gap-1.5 hover:text-amber-400 transition-colors">
             <Phone size={12} className="text-amber-400" />
             <span className="font-medium">1300 SYNERGY (1300 363 177)</span>
           </a>
-          <a href="mailto:admin@synergycarelink.com" className="flex items-center gap-1.5 hover:text-amber-400 transition-colors">
+          <a href="mailto:admin@synergycarelink.com" className="hidden md:flex items-center gap-1.5 hover:text-amber-400 transition-colors">
             <Mail size={12} className="text-amber-400" />
             <span>admin@synergycarelink.com</span>
           </a>
+          <button
+            onClick={() => onNavigate('perth')}
+            className="hidden lg:inline-flex items-center gap-1.5 bg-amber-500/20 hover:bg-amber-500/35 text-amber-300 px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-amber-400/40 transition-colors cursor-pointer"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+            Perth Outlet Coming Soon
+          </button>
         </div>
         
         <div className="flex items-center gap-2">
@@ -208,11 +219,15 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
             <HeartHandshake size={22} className="stroke-[2.5]" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[#0b2240] font-display text-lg sm:text-xl font-bold tracking-tight leading-none group-hover:text-teal-700 transition-colors whitespace-nowrap">
+            <span className="text-[#0b2240] font-display text-lg sm:text-xl font-bold tracking-tight leading-none group-hover:text-teal-700 transition-colors whitespace-nowrap flex items-center gap-2">
               Synergy CareLink
+              <span className="hidden sm:inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-emerald-200">
+                <CheckCircle2 size={10} className="text-emerald-600" />
+                Registered NDIS
+              </span>
             </span>
             <span className="text-slate-500 text-[11px] font-semibold tracking-wide flex items-center gap-1 mt-1">
-              NDIS & Support at Home Service Provider
+              Registered NDIS & Support at Home Provider
             </span>
           </div>
         </a>
@@ -223,13 +238,18 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`px-3 py-2 rounded-md text-[13px] font-medium transition-all duration-200 cursor-pointer ${
+              className={`px-3 py-2 rounded-md text-[13px] font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
                 activeSection === item.id
                   ? 'text-teal-700 bg-teal-50 font-semibold'
                   : 'text-slate-600 hover:text-teal-700 hover:bg-slate-50'
               }`}
             >
-              {item.label}
+              <span>{item.label}</span>
+              {item.badge && (
+                <span className="text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                  {item.badge}
+                </span>
+              )}
             </button>
           ))}
           
@@ -273,13 +293,18 @@ export default function Header({ settings, setSettings, onNavigate, activeSectio
                 onNavigate(item.id);
                 setMobileMenuOpen(false);
               }}
-              className={`w-full text-left px-3.5 py-2.5 rounded-md text-sm font-medium transition-colors ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-md text-sm font-medium transition-colors flex items-center justify-between ${
                 activeSection === item.id
                   ? 'text-teal-700 bg-teal-50 font-bold'
                   : 'text-slate-600 hover:bg-slate-50'
               }`}
             >
-              {item.label}
+              <span>{item.label}</span>
+              {item.badge && (
+                <span className="text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full">
+                  {item.badge}
+                </span>
+              )}
             </button>
           ))}
           <div className="pt-2 border-t border-slate-100 space-y-2">

@@ -22,9 +22,9 @@ export default function Footer({ onNavigate }: FooterProps) {
           <p className="text-xs text-slate-400 leading-relaxed">
             Empowering individuals of all abilities to connect with their community, build lifelong skills, and live independently under the National Disability Insurance Scheme (NDIS).
           </p>
-          <div className="inline-flex items-center gap-1.5 bg-teal-950/40 border border-teal-500/20 px-3 py-1.5 rounded text-xs text-teal-300 font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Registered NDIS Provider
+          <div className="inline-flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-xs text-emerald-300 font-bold">
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            Registered NDIS Provider • NSW
           </div>
         </div>
 
@@ -39,6 +39,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               { label: 'Support at Home & Budget', id: 'support-at-home' },
               { label: 'NDIS Services & Plan Estimator', id: 'ndis' },
               { label: 'Client Referral Portal', id: 'referrals' },
+              { label: 'Perth Outlet (Coming Soon)', id: 'perth' },
               { label: 'About Synergy CareLink', id: 'about' }
             ].map((link, index) => (
               <li key={index}>
@@ -78,6 +79,10 @@ export default function Footer({ onNavigate }: FooterProps) {
               <div>
                 <p className="font-semibold text-white">Office Location:</p>
                 <span>Suite 2, Level 2, 34 Charles Street, Parramatta NSW 2150</span>
+                <div className="mt-1 flex items-center gap-1 text-[11px] text-amber-400 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  <span>Perth Outlet, WA (Opening Soon)</span>
+                </div>
               </div>
             </li>
           </ul>
@@ -139,7 +144,7 @@ export default function Footer({ onNavigate }: FooterProps) {
 
       {/* Copyright Bar */}
       <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-        <p>© 2026 Synergy CareLink. All Rights Reserved. NSW Registered Provider.</p>
+        <p>© 2026 Synergy CareLink. All Rights Reserved. Registered NDIS Provider (NSW).</p>
         <div className="flex gap-4">
           <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-slate-300">Privacy Policy</a>
           <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-slate-300">Feedback & Complaints</a>

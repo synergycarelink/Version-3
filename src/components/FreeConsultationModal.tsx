@@ -134,6 +134,7 @@ export default function FreeConsultationModal({ isOpen, onClose, defaultTopic }:
                   <option value="NDIS & Support at Home Guidance">NDIS & Support at Home Overview (All-in-One)</option>
                   <option value="NDIS Plan Navigation & Funding Allocation">NDIS Plan Navigation & Budget Allocation</option>
                   <option value="Support at Home Package Tiers Advice">Support at Home Tiers & Care Services</option>
+                  <option value="Perth Outlet Expansion & Services">Perth Outlet Expansion & WA Services (New)</option>
                   <option value="Supported Independent Living (SIL) Housing">Supported Independent Living (SIL) Options</option>
                   <option value="Community Access & Day Hub Programs">Community Access & Day Hub Programs</option>
                   <option value="General Care Consultation / Referral">General Care Consultation</option>
@@ -149,7 +150,7 @@ export default function FreeConsultationModal({ isOpen, onClose, defaultTopic }:
                   {[
                     { id: 'phone', label: 'Phone Call', icon: PhoneCall, desc: '15-20 min chat' },
                     { id: 'video', label: 'Video Call', icon: Video, desc: 'Zoom or Teams' },
-                    { id: 'in_person', label: 'In-Person', icon: MapPin, desc: 'At Home or Parramatta' },
+                    { id: 'in_person', label: 'In-Person', icon: MapPin, desc: 'Home, Parramatta or Perth' },
                   ].map((format) => {
                     const Icon = format.icon;
                     return (

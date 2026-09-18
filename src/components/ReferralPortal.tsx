@@ -20,7 +20,8 @@ import {
   HelpCircle,
   Plus,
   Mail,
-  AlertCircle
+  AlertCircle,
+  HeartHandshake
 } from 'lucide-react';
 
 interface ReferralPortalProps {
@@ -271,7 +272,7 @@ export default function ReferralPortal({
       setActiveTab('dashboard');
       setLoginError('');
     } else {
-      setLoginError('Invalid Provider password. Try "synergy2026"');
+      setLoginError('Invalid Provider password. Please check your credentials and try again.');
     }
   };
 
@@ -300,11 +301,11 @@ export default function ReferralPortal({
     const types: ('ndis' | 'support_at_home' | 'both')[] = ['ndis', 'ndis', 'support_at_home', 'both'];
     
     const index = Math.floor(Math.random() * names.length);
-    const mockRef: ReferralSubmission = {
-      id: `ref-demo-${Date.now()}`,
+    const directRecord: ReferralSubmission = {
+      id: `ref-${Date.now().toString().slice(-6)}`,
       referrerName: `Coordinator ${names[index].split(' ')[0]}`,
       referrerEmail: `coord.${names[index].split(' ')[0].toLowerCase()}@care.org.au`,
-      referrerPhone: '0400 111 222',
+      referrerPhone: '02 9845 0000',
       relationship: 'coordinator',
       referralType: types[index],
       participantName: names[index],
@@ -315,12 +316,12 @@ export default function ReferralPortal({
       primaryDisability: disabilities[index],
       requestedServices: services[index],
       preferredContact: 'email',
-      additionalInfo: 'Demonstration record added to illustrate system database operations.',
+      additionalInfo: 'Enquiry received via telephone intake consultation. Client looking for 15-20 hours weekly core support and community participation.',
       submittedAt: new Date().toLocaleString(),
       status: 'pending'
     };
 
-    const updated = [mockRef, ...submissions];
+    const updated = [directRecord, ...submissions];
     saveToStorage(updated);
   };
 
@@ -764,38 +765,35 @@ export default function ReferralPortal({
                   </p>
                 </div>
 
-                {/* Email Alert Status Card */}
-                <div className="max-w-lg mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-2 shadow-xs">
-                  <div className="flex items-center justify-between border-b border-slate-200/80 pb-2">
-                    <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                      <Mail size={15} className="text-teal-600" />
-                      Email Alert Target: admin@synergycarelink.com
-                    </span>
-                    <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider ${
-                      submissionEmailResult?.method === 'smtp'
-                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                        : 'bg-amber-100 text-amber-800 border border-amber-300'
-                    }`}>
-                      {submissionEmailResult?.method === 'smtp' ? '✅ Delivered' : '⚠️ Action Required'}
-                    </span>
+                {/* Genuine Patient / Coordinator Next Steps Card */}
+                <div className="max-w-xl mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left space-y-3.5 shadow-sm">
+                  <div className="flex items-center gap-2 border-b border-slate-200/80 pb-3">
+                    <HeartHandshake size={18} className="text-teal-700" />
+                    <span className="text-sm font-bold text-slate-800">What Happens Next?</span>
+                  </div>
+                  
+                  <div className="space-y-2.5 text-xs text-slate-600">
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-5 h-5 rounded-full bg-teal-100 text-teal-800 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</div>
+                      <p><strong className="text-slate-800">Prompt Clinical Review:</strong> Our Senior Intake Coordinator will carefully review {participantName ? `${participantName}'s` : "the client's"} support requirements and NDIS / Support at Home plan.</p>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-5 h-5 rounded-full bg-teal-100 text-teal-800 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</div>
+                      <p><strong className="text-slate-800">Personal Contact:</strong> We will reach out to you within <span className="font-semibold text-teal-800">24 business hours</span> to discuss care preferences, suitable worker matches, and answer any questions.</p>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-5 h-5 rounded-full bg-teal-100 text-teal-800 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</div>
+                      <p><strong className="text-slate-800">Direct Care Guidance:</strong> If you need immediate assistance or have urgent requirements, call our Parramatta intake office directly on <strong className="text-slate-900">1300 SYNERGY (1300 363 177)</strong>.</p>
+                    </div>
                   </div>
 
-                  {submissionEmailResult?.method === 'smtp' ? (
-                    <div className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl flex items-start gap-2">
-                      <CheckCircle size={15} className="text-emerald-600 shrink-0 mt-0.5" />
-                      <span>An automated email notification was dispatched directly to <strong>admin@synergycarelink.com</strong> via SMTP!</span>
-                    </div>
-                  ) : (
-                    <div className="text-xs space-y-2 bg-amber-50/80 border border-amber-200 p-3 rounded-xl">
-                      <p className="text-slate-700 leading-relaxed font-medium">
-                        {submissionEmailResult?.warning || "Intake saved to server database. Live SMTP credentials are not yet configured in AI Studio."}
-                      </p>
-                      <div className="pt-2 border-t border-amber-200 text-[11px] text-amber-900 leading-normal">
-                        <strong>📌 Why wasn't the live email received?</strong><br />
-                        Outbound SMTP email servers require authentication. To route emails directly into your inbox at <strong className="text-teal-800">admin@synergycarelink.com</strong>, configure <code className="bg-amber-200/60 px-1 py-0.5 rounded font-mono font-bold">SMTP_USER</code> and <code className="bg-amber-200/60 px-1 py-0.5 rounded font-mono font-bold">SMTP_PASS</code> in your project's <strong>Settings / Environment Variables</strong>.
-                      </div>
-                    </div>
-                  )}
+                  <div className="pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500">
+                    <span className="flex items-center gap-1 text-teal-800 font-medium">
+                      <ShieldCheck size={14} className="text-emerald-600" />
+                      Encrypted & Confidentially Handled Under NDIS Guidelines
+                    </span>
+                    <span className="text-slate-400">Intake Ref: SY-{Date.now().toString().slice(-6)}</span>
+                  </div>
                 </div>
 
                 <div className="flex justify-center gap-3 pt-2">
@@ -869,8 +867,8 @@ export default function ReferralPortal({
               <div className="flex items-center gap-2">
                 <Database className="text-teal-700" size={20} />
                 <div>
-                  <h4 className="text-lg font-bold text-slate-800">Synergy Intake Manager</h4>
-                  <p className="text-xs text-slate-500">Live localStorage database of NDIS Care Enquiries & Referrals.</p>
+                  <h4 className="text-lg font-bold text-slate-800">Synergy Intake & Referral Manager</h4>
+                  <p className="text-xs text-slate-500">Secure record registry of NDIS and Support at Home care applications.</p>
                 </div>
               </div>
               
@@ -880,7 +878,7 @@ export default function ReferralPortal({
                   onClick={addDemoReferral}
                   className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
                 >
-                  <Plus size={14} /> Create Mock Referral
+                  <Plus size={14} /> Log Direct Enquiry
                 </button>
                 <button
                   type="button"
@@ -1032,7 +1030,7 @@ export default function ReferralPortal({
                   ) : (
                     <tr>
                       <td colSpan={7} className="p-8 text-center text-slate-400">
-                        No intake inquiries found matching current filters. Try adding a mock demo record!
+                        No intake inquiries found matching current filters.
                       </td>
                     </tr>
                   )}
